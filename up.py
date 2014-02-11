@@ -12,6 +12,8 @@ from wand.image import Image
 from wand.display import display
 from wand.drawing import Drawing
 from wand.color import Color
+import textwrap
+import eyed3
 
 
 # -----------------------------------------------------------------------------
@@ -44,7 +46,7 @@ class Album(object):
     A generic container for all the album stuff
     """
     question = 1
-    title = "Up = Side A"
+    title = "Up: Side A"
     artist = "E Taylor"
     genre = "Rap"
     year = "2014"
@@ -52,27 +54,47 @@ class Album(object):
     artwork_template = "/static/album/up.png"
     tracks = [
         {
-            "filename": "/static/tracks/1-e-taylor-little-empire.mp3",
+            "filename": "1-e-taylor-little-empire.mp3",
             "title": "Little Empire"
         },
         {
-            "filename": "/static/tracks/2-e-taylor-back-you-up.mp3",
+            "filename": "2-e-taylor-back-you-up.mp3",
             "title": "Back You Up Feat. Bella Kalolo"
         },
         {
-            "filename": "/static/tracks/3-e-taylor-ego.mp3",
+            "filename": "3-e-taylor-ego.mp3",
             "title": "Ego"
         },
         {
-            "filename": "/static/tracks/4-e-taylor-new-york-any-nickel.mp3",
+            "filename": "4-e-taylor-new-york-any-nickel.mp3",
             "title": "New York (Any Nickel)"
 
         },
         {
-            "filename": "/static/tracks/5-e-taylor-central-park.mp3",
+            "filename": "5-e-taylor-central-park.mp3",
             "title": "Central Park"
         }
     ]
+    input_path = "var/tracks/"
+    output_path = "static/tracks/"
+
+    def decorate(self, answer_id, answer, image_path, thumbnail_path):
+        image_data = open(image_path, "rb").read()
+        thumbnail_data = open(thumbnail_path, "rb").read()
+
+        track_counter = 1;
+        for song in self.tracks:
+            audiofile = eyed3.load("%s%s" % (self.input_path, song['filename']))
+            audiofile.tag.artist = u"%s" % (self.artist)
+            audiofile.tag.album = u"%s" % ( self.title )
+            audiofile.tag.title = u"%s" % ( song['title'] )
+            audiofile.tag.track_num = track_counter
+
+            audiofile.tag.images.set(2,image_data,"image/png",u"%s - %s" % (self.artist, self.title))
+            
+            audiofile.tag.save()
+            track_counter = track_counter + 1
+
 
 
 class Questions(object):
@@ -153,11 +175,17 @@ class AlbumArtwork(object):
 
                             draw.font = 'static/fonts/league_gothic.otf'
                             draw.font_size = 40
-                            counter = 0
+                            counter = 40
 
-                            for a in other_answers:
-                                draw.text(0, counter, a)
-                                counter = counter+40
+
+                            _text = ". ".join(other_answers)
+
+                            lines = textwrap.wrap(_text, 45)
+
+                            for a in lines:
+                                if counter < 440:
+                                    draw.text(0, counter, a)
+                                    counter = counter+40
                             
                             draw(image)
                             image.composite(album_details, left=0, top=0)
@@ -165,7 +193,12 @@ class AlbumArtwork(object):
                             image.save(filename=image_path)
 
         with Image(filename=image_path) as large:
-            
+            with large.clone() as thumb:
+                thumb.resize(140, 140)
+                thumb.save(filename=thumbnail_path)
+
+
+        album = Album().decorate(answer_id, answer, image_path, thumbnail_path)
 
         return self.store(answer_id, image_path, thumbnail_path)
 
@@ -291,6 +324,7 @@ def music():
         return render_template('music-video.j2')
     else:
         return redirect(url_for('start'))
+
 
 
 # -----------------------------------------------------------------------------
