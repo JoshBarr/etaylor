@@ -1,0 +1,136 @@
+{% extends "template.j2" %}
+{% import "macros.j2" as macros %}
+
+{% block meta %}
+<meta property="fb:app_id"          content="1234567890" /> 
+<meta property="og:type"            content="social-cookbook:recipe" /> 
+<meta property="og:url"             content="http://e-taylor.com/" /> 
+<meta property="og:title"           content="{{ album.title }}" /> 
+<meta property="og:image"           content="{{ album.image }}" /> 
+<meta property="cookbook:author"    content="http://samples.ogp.me/390580850990722" />
+{% endblock %} 
+
+{% block css %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %} 
+    
+    {% block download  %}
+
+        <div id='album'  class='block block--fullscreen block--light'>
+            <div class="fb-like-box" data-href="http://www.facebook.com/thisisetaylor" data-colorscheme="light" data-show-faces="false" data-header="true" data-stream="false" data-show-border="true"></div>
+
+            <div class='cd-art ' data-cover>
+                <div class='text--center' style='' data-sticky-placeholder>
+                    <div id="cd_face" class="cd-words">
+                        
+                    </div>
+                    <img src="/static/images/placeholder.png" class="cd-image" alt="">
+                    
+                </div>
+            </div>
+            <div class='text--center mx' data-sticky-hide>
+                <a href='/download' class='btn btn-primary' data-download-btn>
+                    Download it.
+                </a>
+                <a href='/email-me' class='btn btn-primary'>
+                    Email me the link
+                </a>
+                <form action="/email-me" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+                    {{ macros.render_field(email_form.email) }}
+                    <button type="submit" class="btn">
+                        Email me
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    {% endblock %}
+
+    {% block share %}
+
+        <div id='working' class='block block--fullscreen text--center ' data-stretchy-block>
+            <div class='block__background block__background-3'></div>
+            <div class='block block--dark block--narrow'>
+                <h2>While you wait, tweet it.</h2>
+                <span class='st_facebook_hcount' st_url="" st_title="" st_image="" st_summary="" displayText='Facebook'></span>
+                <span class='st_twitter_hcount' displayText='Tweet'></span>
+                <p>
+                    <a href="#album" data-scroll-href class='btn btn-secondary btn--small'>Skip...</a>
+
+                </p>
+            </div>
+        </div>
+
+    {% endblock %}
+
+    {% block question %}
+
+        <div data-state="question" id="question" class='block block--fullscreen text--center' data-stretchy-block>
+            <div class='block__background block__background-2'></div>
+            <div class='block block--dark block--narrow'>
+                <div class='row provocation'>
+                    <h2 class=''>{{ question }}</h2>
+                </div>
+
+                <form method="post" action="/generate">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    
+                    <div class="confession_message">
+                        {{ form.question()|safe }}
+                    </div>
+
+                    {% if form.question.errors %}
+                        <ul class=errors>
+                            {% for error in form.question.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    <button type="submit" class='btn btn-primary js-hide'>
+                        Get the album
+                    </button>  
+                    <p>
+                        {#<a href="#working" data-scroll-href id="submit" class='btn btn-primary js-hide'>
+                            Get the album
+                        </a>
+                        <noscript>#}
+                              
+                        {#</noscript>#}
+                    </p>
+                </form>
+
+                <div class=''>
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}
+
+
+
+    {% block start %}
+        <div class='block block--fullscreen text--center' id='start' data-stretchy-block>
+            <div class='block__background'></div>
+            <div class='block block--dark block--narrow'>
+                <h2>Download the new album Up here for free.</h2>
+                <p> But first you need to answer a question. Why? Because the artwork is dynamic (that means it’s always changing) and it will include your answer, as well as some of those before you.</p>
+                <p>Now you’re an artist too.</p>
+                <a class='btn btn-primary' href='#question' data-scroll-href>Go.</a>
+            </div>
+        </div>
+    {% endblock %}
+
+{% endblock %}
+
+
+{% block scripts %}
+    {{ super() }}
+
+    <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+    <script type="text/javascript">stLight.options({publisher: "56318495-bb29-4bc3-afb5-92c9382816e4", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+{% endblock %}

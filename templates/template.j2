@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
+	{% block meta %}
+	{% endblock %}
+	{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/screen.css') }}">
+    {% endblock %}
+	<title>E-taylor :: Up</title>
+
+</head>
+<body>
+
+<div>
+	{% block content %}
+	{% endblock %}
+</div>
+
+{% block scripts %}
+<script type="text/javascript">
+	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/site.js') }}"></script>
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+.DS_Store
+static/artwork/*
+node_modules
+bower_components
+var/*
