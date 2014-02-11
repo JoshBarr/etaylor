@@ -161,7 +161,7 @@ class AlbumArtwork(object):
         for row in random_answers:
             other_answers.append(row[0])
 
-        shuffle(other_answers)
+        # shuffle(other_answers)
 
         image_path = '%sartwork-%s-500x500.png' % (self.output_path, answer_id)
         thumbnail_path = '%sartwork-%s-140x140.png' % (self.output_path, answer_id)
