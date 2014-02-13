@@ -16,113 +16,21 @@
 
 {% block content %} 
     
+    {# fancy ajax version if theres time 
     {% block download  %}
-
-        <div id='album'  class='block block--fullscreen block--light'>
-            <div class="fb-like-box" data-href="http://www.facebook.com/thisisetaylor" data-colorscheme="light" data-show-faces="false" data-header="true" data-stream="false" data-show-border="true"></div>
-
-            <div class='cd-art ' data-cover>
-                <div class='text--center' style='' data-sticky-placeholder>
-                    <div id="cd_face" class="cd-words">
-                        
-                    </div>
-                    <img src="/static/images/placeholder.png" class="cd-image" alt="">
-                    
-                </div>
-            </div>
-            <div class='text--center mx' data-sticky-hide>
-                <a href='/download' class='btn btn-primary' data-download-btn>
-                    Download it.
-                </a>
-                <a href='/email-me' class='btn btn-primary'>
-                    Email me the link
-                </a>
-                <form action="/email-me" method="post">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-
-                    {{ macros.render_field(email_form.email) }}
-                    <button type="submit" class="btn">
-                        Email me
-                    </button>
-                </form>
-            </div>
-        </div>
-
+        {% include "step-4.j2" with context %}
     {% endblock %}
 
     {% block share %}
-
-        <div id='working' class='block block--fullscreen text--center ' data-stretchy-block>
-            <div class='block__background block__background-3'></div>
-            <div class='block block--dark block--narrow'>
-                <h2>While you wait, tweet it.</h2>
-                <span class='st_facebook_hcount' st_url="" st_title="" st_image="" st_summary="" displayText='Facebook'></span>
-                <span class='st_twitter_hcount' displayText='Tweet'></span>
-                <p>
-                    <a href="#album" data-scroll-href class='btn btn-secondary btn--small'>Skip...</a>
-
-                </p>
-            </div>
-        </div>
-
+        {% include "step-3.j2" with context %}
     {% endblock %}
 
     {% block question %}
-
-        <div data-state="question" id="question" class='block block--fullscreen text--center' data-stretchy-block>
-            <div class='block__background block__background-2'></div>
-            <div class='block block--dark block--narrow'>
-                <div class='row provocation'>
-                    <h2 class=''>{{ question }}</h2>
-                </div>
-
-                <form method="post" action="/generate">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                    
-                    <div class="confession_message">
-                        {{ form.question()|safe }}
-                    </div>
-
-                    {% if form.question.errors %}
-                        <ul class=errors>
-                            {% for error in form.question.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-
-                    <button type="submit" class='btn btn-primary js-hide'>
-                        Get the album
-                    </button>  
-                    <p>
-                        {#<a href="#working" data-scroll-href id="submit" class='btn btn-primary js-hide'>
-                            Get the album
-                        </a>
-                        <noscript>#}
-                              
-                        {#</noscript>#}
-                    </p>
-                </form>
-
-                <div class=''>
-                </div>
-            </div>
-        </div>
-
-    {% endblock %}
-
-
+        {% include "step-2.j2" with context %}
+    {% endblock %}#}
 
     {% block start %}
-        <div class='block block--fullscreen text--center' id='start' data-stretchy-block>
-            <div class='block__background'></div>
-            <div class='block block--dark block--narrow'>
-                <h2>Download the new album Up here for free.</h2>
-                <p> But first you need to answer a question. Why? Because the artwork is dynamic (that means it’s always changing) and it will include your answer, as well as some of those before you.</p>
-                <p>Now you’re an artist too.</p>
-                <a class='btn btn-primary' href='#question' data-scroll-href>Go.</a>
-            </div>
-        </div>
+        {% include "step-1.j2" with context %}
     {% endblock %}
 
 {% endblock %}

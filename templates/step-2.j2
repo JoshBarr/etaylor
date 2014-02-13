@@ -1,0 +1,45 @@
+<div data-state="question" id="question" class='block block--fullscreen' data-stretchy-block>
+    <div class='block__background block__background-2'></div>
+    <div class='block block--dark block--narrow'>
+        <div class='row provocation'>
+            <h2 class=''>
+
+                <span class='question__q'>Q:</span> {{ question.title }}
+            </h2>
+        </div>
+
+        <form method="post" action="/question">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            
+            <div class="confession_message">
+                <textarea class='question__answer' id='question' name='question' maxlength='85' placeholder="A:"></textarea>
+                {#{ form.question()|safe }#}
+            </div>
+
+            {% if form.question.errors %}
+                <ul class="errors list-unstyled block block--s">
+                    {% for error in form.question.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <p>
+
+            <button type="submit" class='btn btn-primary js-hide'>
+                Get the album
+            </button> 
+            </p> 
+            <p>
+                {#<a href="#working" data-scroll-href id="submit" class='btn btn-primary js-hide'>
+                    Get the album
+                </a>
+                <noscript>#}
+                      
+                {#</noscript>#}
+            </p>
+        </form>
+
+        <div class=''>
+        </div>
+    </div>
+</div>

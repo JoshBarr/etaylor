@@ -1,320 +1,62 @@
-html, body { height: 100%; background: #111;}
+html {
+  background: #202020 url(../images/noise.png);
+}
+
+
 
 body {
     margin: 0;
     padding: 0;
-    background: #fff url('../images/noise.png');
+    // background: #fff url('../images/noise.png');
     color: #111;
     font-family: sans-serif;
 }
 
-h1 {
-    font-size: 4em;
-    line-height: 1.333333333;
+
+.antialiased, h2, .question__answer, .intro, .btn-primary {
     -webkit-font-smoothing: antialiased;
 }
 
-h1, h2 {
-    font-family: "League Gothic", sans-serif;
-    -webkit-font-smoothing: antialiased;
-}
-
-h2 {
-    font-size: 3em;
-    text-transform: uppercase;
-}
-
-h1:first-child,
-h2:first-child {
-    margin-top: 0;
-}
-
-p {
-    line-height: 1.5;
+h2, .question__answer, .intro {
+  font-size: 1.5em;
+  line-height: 1.4;
+  font-weight: 100;
 }
 
 
-a {
-    color: #f01e4a;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #f01e4a;
-    text-decoration: underline;
-}
-
-button {
-  font-size: medium;
-}
-
-.card {
-    text-align: center;
-    max-width: 34em;
-    margin: 0 auto;
-}
-
-.row {
-    max-width: 80%;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.row > :first-child {
-    margin-top: 0;
-}
-
-.site-header {
-
-    width: 100%;
-    /*transition: margin-top 300ms ease-in-out;*/
-}
-
-.site-header--sticky {
-    z-index: 10;
-    display: none;
-    margin-top: 0;
-    position: fixed;
-    /*transition: margin-top 300ms ease-in-out;*/
-    top: 0;
-    left: 0;
-}
-
-.site-header--fixed {
-    display: block;
-    margin-top: -16em;  
+.block {
+  padding: 1.5em 2em;
+  overflow: hidden;
 }
 
 
-.provocation{
-    text-align: center;
-    margin-top: 1em;
-    padding-bottom: 0.2em;
-    /*border-bottom: solid 1px #999;*/
+.block--s {
+  padding: .75em 1em;
 }
 
-.confession{
-    margin-top: 2em;
+.block--dark {
+  color: #fff;
+  max-width: 39em;
 }
 
 .confession_message textarea{
     border: 0;
-    font-size: 1.875em;
-    padding: 0.5em;
+    // font-size: 1.875em;
+    padding: 0;
     font-family: helvetica, sans-serif;
-    width: 90%;
-    height: 100px;
+    width: 100%;
+    height: 130px;
+    background-color: transparent;
+    color: #9DE7FF;
 }
 
 .confession_message textarea:focus{
     outline:none;
 }
 
-.action {
 
-}
-
-.island {
-    padding: 1em;
-    border: solid 1px rgba(0,0,0,0.2);
-}
-
-
-.block {
-    /*margin-top: 1em;*/
-    padding: 1.5em 2em;
-}
-
-.block--fullscreen {
-    position: relative;
-    height: 100%;
-    min-height: 300px;
-    transition: opacity 600ms ease-in, visibility 600ms;
-
-}
-
-    .block__anchor {
-        position: absolute;
-        /*top: -13em;*/
-        top: 0;
-    }
-
-    .block__background {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: -1;
-        background: url('../images/placeholder-1.jpg') top center no-repeat;
-        background-size: cover;
-        opacity: .5;
-    }
-
-    .block__background-2 {
-        background-image: url('../images/placeholder-2.jpg');
-    }
-
-    .block__background-3 {
-        background-image: url('../images/placeholder-3.jpg');
-    }
-
-.block--light {
-    background: #ddd;
-    color: #333;
-}
-
-.block--dark {
-    /*background: #2d2926;*/
-    color: #fff;
-    background: rgba(0,0,0,0.7);
-}
-
-.block--narrow {
-    max-width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 13em;
-    margin-bottom: 5em;
-    border: solid 3px #fff;
-}
-
-.block--inactive {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.block--hide {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    font-size: 0;
-}
-
-
-
-
-.text--center {
-    text-align: center;
-}
-
-.cd-art {
-  position: relative;
-    padding: 1em;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 34em;
-    max-height: 34em;
-    height: 100%;
-    border: solid 3px transparent;
-    transition: background 400ms ease-out 0ms,
-                box-shadow 200ms linear 0ms,
-                border-radius 400ms ease-out 0ms,
-                border 300ms linear 0ms;
-}
-
-    .cd-words {
-        position: absolute;
-        top: 0.5em;
-        left: 0.5em;
-        right: 0.5em;
-        bottom: 0.5em;
-        font-size: 2em;
-        color: #fff;
-        text-align: left;
-    }
-
-    .cd-art--download .cd-words {
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    .cd-image {
-        position: relative;
-    }
-
-.cd-art img {
-    transition: opacity 300ms;
-}
-
-.cd-art--active {
-    background: #c7c7c7;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
-    border: solid 3px #555;
-    transition-delay: 300ms, 300ms, 0ms;
-}
-
-
-.cd-art--download {
-    position: relative;
-    border-radius: 60em;
-}
-    .cd-art--download:before {
-        position: absolute;
-        top: 20%;
-        left: 50%;
-        margin-left: -70px;
-        content: url(/static/images/download.png);
-
-    }
-
-    .cd-art--download:after {
-        top: 50%;
-        left: 0;
-        right: 0;
-        text-align: center;
-        position: absolute;
-        display: block;
-        content: "Downloading...";
-        color: red;
-        margin-top: 2em;
-    }
-
-    .cd-art--download  img {
-        opacity: 0;
-    }
-
-
-
-
-.transition-hide {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 400ms ease-in, visibility 400ms;
-}
-
-.mx { margin-top: 2em; }
-.mxx-bottom {   margin-bottom: 3em; }
-
-
-
-
-
-
-
-
-
-/**
- * These helpers may already be elsewhere in your codebase
- * ----------------------------------------------------------------------------
- */
-.i, .btn {
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
-}
-
-.btn {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-}
-
-.i {
-  vertical-align: middle;
-  font-style: normal;
+button {
+  font-size: medium;
 }
 
 /**
@@ -358,11 +100,11 @@ button {
   border-width: 1px;
   border-color: transparent;
   border-style: solid;
-  -webkit-border-radius: 0.3125em;
-  -moz-border-radius: 0.3125em;
-  -ms-border-radius: 0.3125em;
-  -o-border-radius: 0.3125em;
-  border-radius: 0.3125em;
+  // -webkit-border-radius: 0.3125em;
+  // -moz-border-radius: 0.3125em;
+  // -ms-border-radius: 0.3125em;
+  // -o-border-radius: 0.3125em;
+  // border-radius: 0.3125em;
 }
 .btn, .btn:hover {
   text-decoration: none;
@@ -372,471 +114,885 @@ button {
   outline: none;
 }
 
-/**
- * Button modifiers
- * ----------------------------------------------------------------------------
- * E.g:
-    <a class='btn btn--large'>
-        My big button
-    </a>
- * Or,
-    <a class='btn btn--small btn--soft'>
-        My small rounded button
-    </a>
- */
-.btn--large,
-.btn--icon-large,
-.btn--icon-large--rev,
-.btn--icon-only--large {
-  line-height: 3.5;
+.i, .btn {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
 }
 
-.btn--large {
-  padding-right: 2.5em;
-  padding-left: 2.5em;
+.btn {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 
-.btn--small,
-.btn--icon-small,
-.btn--icon-small--rev,
-.btn--icon-only--small {
-  line-height: 2;
+.i {
+  vertical-align: middle;
+  font-style: normal;
 }
 
-.btn--small {
-  padding-right: 0.625em;
-  padding-left: 0.625em;
-}
-
-/**
- * Pill type buttons with (rounded) ends
- * ----------------------------------------------------------------------------
- */
-.btn--soft {
-  -webkit-border-radius: 200px;
-  -moz-border-radius: 200px;
-  -ms-border-radius: 200px;
-  -o-border-radius: 200px;
-  border-radius: 200px;
-}
-
-.btn--hard {
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
-  border-radius: 0;
-}
-
-/**
- * Block buttons stretch to the full width of their parent (handy!)
- */
-.btn--block {
-  display: block;
-  text-align: center;
-}
-
-/**
- * Make a button behave like a block at mobile only (also handy)
- */
-@media only screen and (max-width: 37.5em) {
-  .btn--block-mobile {
-    text-align: center;
-    display: block;
-  }
-}
-/**
- * Submit buttons
- * ----------------------------------------------------------------------------
- * FireFox doesn't like line-heights on submit buttons. Stick a class on submit
- * buttons and make sure the padding's the same as your default button :)
- */
-.btn--submit {
-  line-height: 1;
-  padding-top: 0.625em;
-  padding-bottom: 0.625em;
-}
-
-.btn--submit-large {
-  line-height: 1;
-  padding-top: 1.25em;
-  padding-bottom: 1.25em;
-}
-
-.btn--submit-small {
-  line-height: 1;
-  padding-top: 0.3125em;
-  padding-bottom: 0.3125em;
-}
-
-/**
- * Buttons with icons
- * ----------------------------------------------------------------------------
- * E.g:
-    <a class='btn btn--icon'>
-        <i class='i sprite_icon_edit'></i>
-        My big button
-    </a>
- * Or,
-    <a class='btn btn--icon-large--rev'>
-        My small rounded button
-        <i class='i sprite_icon_close'></i>
-    </a>
- */
-.btn--icon-only,
-.btn--icon-only--small,
-.btn--icon-only--large {
-  text-align: center;
-  min-width: 1em;
-}
-
-.btn--icon-only {
-  padding-left: 0.78125em;
-  padding-right: 0.78125em;
-}
-
-.btn--icon-only--small {
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-}
-
-.btn--icon-only--large {
-  padding-left: 1.38889em;
-  padding-right: 1.38889em;
-}
-
-.btn--icon {
-  padding-left: 0.625em;
-}
-.btn--icon > .i {
-  margin-right: 0.625em;
-}
-
-.btn--icon--rev {
-  padding-right: 0.625em;
-}
-.btn--icon--rev > .i {
-  margin-left: 0.625em;
-}
-
-.btn--icon-large {
-  padding-left: 1.25em;
-  padding-right: 2.5em;
-}
-.btn--icon-large > .i {
-  margin-right: 0.625em;
-}
-
-.btn--icon-large--rev {
-  padding-left: 2.5em;
-  padding-right: 1.25em;
-}
-.btn--icon-large--rev > .i {
-  margin-left: 0.625em;
-}
-
-.btn--icon-small {
-  padding-left: 0.41667em;
-  padding-right: 0.625em;
-}
-.btn--icon-small > .i {
-  margin-right: 0.3125em;
-}
-
-.btn--icon-small--rev {
-  padding-left: 0.625em;
-  padding-right: 0.3125em;
-}
-.btn--icon-small--rev > .i {
-  margin-left: 0.625em;
-}
-
-/**
- * Button types
- * ----------------------------------------------------------------------------
- * E.g:
-    <a class='btn btn-primary'>
-        My awesome button
-    </a> 
- */
-.btn-primary:hover,
-.btn-secondary:hover,
-.btn-positive:hover,
-.btn-negative:hover {
-  color: #fff;
-}
 
 .btn-primary {
-  background-color: #ef2b05;
-  background-color: #00CF53;
+  border: solid 1px #999;
+  // text-transform: uppercase;
   color: #fff;
-}
-.btn-primary:hover {
-  background-color: #fff;
-  color: #333;
+  background-color: transparent;
+
+  &:hover {
+    background: #4148FF;
+    border-color: #4148FF;
+  }
 }
 
-.btn-secondary {
-  background-color: #999;
-  color: #fff;
-}
-.btn-secondary:hover {
-  background-color: #777;
-}
-
-.btn-tertiary {
-  background-color: #ddd;
-  color: #444;
-}
-.btn-tertiary:hover {
-  background-color: #ccc;
-  color: #333;
-}
-
-.btn-positive {
-  background-color: #3977B1;
-  color: #fff;
-}
-.btn-positive:hover {
-  background-color: #306596;
-}
-
-.btn-negative {
-  background-color: #eb3930;
-  color: #fff;
-}
-.btn-negative:hover {
-  background-color: #d8281f;
-}
-
-/**
- * A common active state makes us look pro as, bro!
- */
-.btn:active {
-  background-color: #333;
-  color: #fff;
-}
-
-/**
- * ----------------------------------------------------------------------------
- * Button behaviors
- * ----------------------------------------------------------------------------
- */
-/**
- * Simple bounces
- * ----------------------------------------------------------------------------
- */
-.btn--bounce,
-.btn--bob {
-  position: relative;
-  -webkit-transition: bottom 100ms ease-out;
-  -moz-transition: bottom 100ms ease-out;
-  -ms-transition: bottom 100ms ease-out;
-  -o-transition: bottom 100ms ease-out;
-  transition: bottom 100ms ease-out;
-}
-
-.btn--bounce:active {
-  bottom: -2px;
-}
-
-.btn--bob:active {
-  bottom: -1px;
-}
-
-/**
- * Bounce the icon to a side
- */
-.btn--bounce-icon--right .i,
-.btn--bounce-icon--left .i,
-.btn--bounce-icon--bottom .i,
-.btn--bounce-icon--top .i {
-  position: relative;
-  -webkit-transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  -moz-transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  -ms-transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  -o-transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  -webkit-transition-duration: 300ms;
-  -moz-transition-duration: 300ms;
-  -ms-transition-duration: 300ms;
-  -o-transition-duration: 300ms;
-  transition-duration: 300ms;
-}
-
-.btn--bounce-icon--right:hover .i {
-  -webkit-transition-property: left;
-  -moz-transition-property: left;
-  -ms-transition-property: left;
-  -o-transition-property: left;
-  transition-property: left;
-  left: .3125em;
-}
-
-.btn--bounce-icon--left:hover .i {
-  -webkit-transition-property: right;
-  -moz-transition-property: right;
-  -ms-transition-property: right;
-  -o-transition-property: right;
-  transition-property: right;
-  right: .3125em;
-}
-
-.btn--bounce-icon--bottom:hover .i {
-  -webkit-transition-property: top;
-  -moz-transition-property: top;
-  -ms-transition-property: top;
-  -o-transition-property: top;
-  transition-property: top;
-  top: .3125em;
-}
-
-.btn--bounce-icon--top:hover .i {
-  -webkit-transition-property: bottom;
-  -moz-transition-property: bottom;
-  -ms-transition-property: bottom;
-  -o-transition-property: bottom;
-  transition-property: bottom;
-  bottom: .3125em;
-}
-
-/**
- * Inset buttons on block level elements
- * ----------------------------------------------------------------------------
- */
-.btn--inset {
-  position: relative;
-}
-
-.btn--inset:after {
+.brush {
   position: absolute;
   top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  visibility: hidden;
-  -webkit-transition: border-width 100ms ease-out, visibility 100ms;
-  -moz-transition: border-width 100ms ease-out, visibility 100ms;
-  -ms-transition: border-width 100ms ease-out, visibility 100ms;
-  -o-transition: border-width 100ms ease-out, visibility 100ms;
-  transition: border-width 100ms ease-out, visibility 100ms;
-  content: " ";
-  display: block;
-  border-width: 0;
-  border-color: inherit;
-  border-style: solid;
-}
-
-.btn--inset:hover:after {
-  border-width: 4px;
-  visibility: visible;
-}
-
-.btn--inset-primary:after {
-  border-color: #3977B1;
-}
-
-.btn--inset-secondary:after {
-  border-color: #eb3930;
-}
-
-.btn--inset-large:hover:after {
-  border-width: 8px;
-}
-
-.btn--inset-small:hover:after {
-  border-width: 1px;
-}
-
-/**
- * Buttons that show a loading indicator when clicked
- * ----------------------------------------------------------------------------
- */
-.btn--spinner {
-  position: relative;
-  cursor: default;
-}
-
-.btn--spinner .btn--label {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.btn--spinner:after {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: inline-block;
-  content: url("/static/images/spinner-image.png");
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
   width: 100%;
+  padding-bottom: 22%;
+  background: url(../images/brush.png) 0 0 no-repeat;
+  background-size: cover;
+  // max-width: 56.125em;
 }
 
-.btn--spinner--text:after {
-  content: attr(data-btn-loading-indicator);
+.brush + * {
+  margin-top: 13%;
+  position: relative;
 }
 
 
-.progress {
-    position: fixed;
-    left: 1em;
-    bottom: 1em;
-    transition: opacity 1s ease-out;
-    opacity: 0;
+
+@-webkit-keyframes show {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
-.progress:after {
-    content: "";
-    width: 1px;
-    display: block;
-    position: absolute;
-    left: 50%;
-    top: 0.75em;
-    bottom: 0.85em;
-    background-color: #fff; 
-    text-align: center;
+@-webkit-keyframes grow {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
 }
 
-.progress > * {
-    display: block;
-    color: #fff;
-    font-size: 2em;
-    line-height: 1;
-    text-align: center;
+@-webkit-keyframes up {
+    0% {
+        -webkit-transform: translateY(5%);
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.working {
     position: relative;
-    z-index: 2;
-    transition: color .5s;
-    text-decoration: none;
 }
 
-.progress > a:hover {
-    text-decoration: none;
+.working > span {
+    -webkit-animation: show 2s both 0s ease-in-out;
+    position: absolute;
+    top: 0;
+    margin-top: 0;
+    display: block;
+    left: 0;
+    right: 0;
+}
+
+.working :nth-child(1) {
+    -webkit-animation-delay: 0;
+}
+.working :nth-child(2) {
+    -webkit-animation-delay: 2s;
+}
+.working :nth-child(3) {
+    -webkit-animation-delay: 4s;
+}
+.working :nth-child(4) {
+    -webkit-animation-delay: 6s;
+}
+
+.working :nth-child(5) {
+    -webkit-animation-delay: 8s;
+}
+.working :nth-child(6) {
+    -webkit-animation-delay: 10s;
+}
+.working :nth-child(7) {
+    -webkit-animation-delay: 12s;
 }
 
 
-
-#start:target ~ .progress,
-#question:target ~ .progress,
-#working:target ~ .progress,
-#album:target ~ .progress {
-    opacity: 1;
+.progress-bar {
+    height: 1em;
+    background: #4148FF;
+    width: 0;
+    display: block;
+    -webkit-animation: grow 14s both 0s ease-in-out;
 }
 
-#start:target ~ .progress > :nth-child(4),
-#question:target ~ .progress > :nth-child(3), 
-#working:target ~ .progress > :nth-child(2),
-#album:target ~ .progress > :nth-child(1) {
-    color: red;
+
+.list-unstyled {
+  margin-left: 0;
+  list-style: none;
+  margin: 0;
 }
 
-.btn-facebook {
-    background-color: #3B5998;
+.errors {
+  background: #584F4D;
 }
 
-.btn-twitter {
-    background-color: #4099ff;
+
+[data-stretchy-block] {
+  -webkit-animation: up .5s both 0s ease-in-out;
 }
+
+
+// h1 {
+//     font-size: 4em;
+//     line-height: 1.333333333;
+//     -webkit-font-smoothing: antialiased;
+// }
+
+// h1, h2 {
+//   font-family: sans-serif;
+//     // font-family: "League Gothic", sans-serif;
+//     -webkit-font-smoothing: antialiased;
+// }
+
+// h2 {
+//     font-size: 3em;
+//     // text-transform: uppercase;
+// }
+
+// h1:first-child,
+// h2:first-child {
+//     margin-top: 0;
+// }
+
+// p {
+//     line-height: 1.5;
+// }
+
+
+// a {
+//     color: #f01e4a;
+//     text-decoration: none;
+// }
+
+// a:hover {
+//     color: #f01e4a;
+//     text-decoration: underline;
+// }
+
+
+
+// .card {
+//     text-align: center;
+//     max-width: 34em;
+//     margin: 0 auto;
+// }
+
+// .row {
+//     // max-width: 80%;
+//     margin: 0 auto;
+//     // text-align: center;
+// }
+
+// .row > :first-child {
+//     margin-top: 0;
+// }
+
+// .site-header {
+
+//     width: 100%;
+//     /*transition: margin-top 300ms ease-in-out;*/
+// }
+
+// .site-header--sticky {
+//     z-index: 10;
+//     display: none;
+//     margin-top: 0;
+//     position: fixed;
+//     /*transition: margin-top 300ms ease-in-out;*/
+//     top: 0;
+//     left: 0;
+// }
+
+// .site-header--fixed {
+//     display: block;
+//     margin-top: -16em;  
+// }
+
+
+
+// .confession{
+//     margin-top: 2em;
+// }
+
+
+
+// .action {
+
+// }
+
+// .island {
+//     padding: 1em;
+//     border: solid 1px rgba(0,0,0,0.2);
+// }
+
+
+// .block {
+//     /*margin-top: 1em;*/
+//     padding: 1.5em 2em;
+// }
+
+// .block--fullscreen {
+//     position: relative;
+//     height: 100%;
+//     min-height: 300px;
+//     transition: opacity 600ms ease-in, visibility 600ms;
+
+// }
+
+//     .block__anchor {
+//         position: absolute;
+//         /*top: -13em;*/
+//         top: 0;
+//     }
+
+//     .block__background {
+//         position: absolute;
+//         top: 0;
+//         bottom: 0;
+//         left: 0;
+//         right: 0;
+//         // z-index: -1;
+//         // background: url('../images/placeholder-1.jpg') top center no-repeat;
+//         background-size: cover;
+//         // opacity: .5;
+//         // -webkit-filter: sepia(1) hue-rotate(0deg);
+
+//     }
+
+//     .block__background-2 {
+//         // background-image: url('../images/placeholder-2.jpg');
+//     }
+
+//     .block__background-3 {
+//         // background-image: url('../images/placeholder-3.jpg');
+//     }
+
+// .block--light {
+//     background: #ddd;
+//     color: #333;
+// }
+
+// .block--dark {
+//     // background: rgba(0, 0, 0, 0.54);  
+//     color: #fff;
+//     // background: #111;
+//     // border: solid 1px #000;
+// }
+
+// .block--narrow {
+//     max-width: 45em;
+//     // margin-left: auto;
+//     // margin-right: auto;
+//     // margin-top: 13em;
+//     // margin-bottom: 5em;
+//     // border: solid 3px #fff;
+//     position: relative;
+// }
+
+// .block--inactive {
+//     opacity: 0;
+//     visibility: hidden;
+// }
+
+// .block--hide {
+//     max-height: 0;
+//     overflow: hidden;
+//     opacity: 0;
+//     font-size: 0;
+// }
+
+
+
+
+// .text--center {
+//     text-align: center;
+// }
+
+// .cd-art {
+//   position: relative;
+//     // padding: 1em;
+//     // margin-left: auto;
+//     // margin-right: auto;
+//     max-width: 34em;
+//     max-height: 34em;
+//     height: 100%;
+//     border: solid 3px transparent;
+//     transition: background 400ms ease-out 0ms,
+//                 box-shadow 200ms linear 0ms,
+//                 border-radius 400ms ease-out 0ms,
+//                 border 300ms linear 0ms;
+// }
+
+//     .cd-words {
+//         position: absolute;
+//         top: 0.5em;
+//         left: 0.5em;
+//         right: 0.5em;
+//         bottom: 0.5em;
+//         font-size: 2em;
+//         color: #fff;
+//         text-align: left;
+//     }
+
+//     .cd-art--download .cd-words {
+//         opacity: 0;
+//         visibility: hidden;
+//     }
+
+//     .cd-image {
+//         position: relative;
+//     }
+
+// .cd-art img {
+//     transition: opacity 300ms;
+// }
+
+// .cd-art--active {
+//     background: #c7c7c7;
+//     box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+//     border: solid 3px #555;
+//     transition-delay: 300ms, 300ms, 0ms;
+// }
+
+
+// .cd-art--download {
+//     position: relative;
+//     border-radius: 60em;
+// }
+//     .cd-art--download:before {
+//         position: absolute;
+//         top: 20%;
+//         left: 50%;
+//         margin-left: -70px;
+//         content: url(/static/images/download.png);
+
+//     }
+
+//     .cd-art--download:after {
+//         top: 50%;
+//         left: 0;
+//         right: 0;
+//         text-align: center;
+//         position: absolute;
+//         display: block;
+//         content: "Downloading...";
+//         color: red;
+//         margin-top: 2em;
+//     }
+
+//     .cd-art--download  img {
+//         opacity: 0;
+//     }
+
+
+
+
+// .transition-hide {
+//     opacity: 0;
+//     visibility: hidden;
+//     transition: opacity 400ms ease-in, visibility 400ms;
+// }
+
+// .mx { margin-top: 2em; }
+// .mxx-bottom {   margin-bottom: 3em; }
+
+
+
+
+// h2 {
+// }
+
+// .intro {
+//   // color: #ddd;
+//   line-height: 1.5;
+// }
+
+// .question__answer {
+//   background-color: transparent;
+//   color: #eee;
+//   width: 100%;
+// }
+
+// .question__a {
+
+// }
+
+// .question__q {
+
+// }
+
+
+
+
+
+
+// /**
+//  * These helpers may already be elsewhere in your codebase
+//  * ----------------------------------------------------------------------------
+//  */
+// .i, .btn {
+//   display: inline-block;
+//   *display: inline;
+//   *zoom: 1;
+// }
+
+// .btn {
+//   -webkit-user-select: none;
+//   -moz-user-select: none;
+//   -ms-user-select: none;
+//   -o-user-select: none;
+//   user-select: none;
+// }
+
+// .i {
+//   vertical-align: middle;
+//   font-style: normal;
+// }
+
+
+// /**
+//  * Button modifiers
+//  * ----------------------------------------------------------------------------
+//  * E.g:
+//     <a class='btn btn--large'>
+//         My big button
+//     </a>
+//  * Or,
+//     <a class='btn btn--small btn--soft'>
+//         My small rounded button
+//     </a>
+//  */
+// .btn--large,
+// .btn--icon-large,
+// .btn--icon-large--rev,
+// .btn--icon-only--large {
+//   line-height: 3.5;
+// }
+
+// .btn--large {
+//   padding-right: 2.5em;
+//   padding-left: 2.5em;
+// }
+
+// .btn--small,
+// .btn--icon-small,
+// .btn--icon-small--rev,
+// .btn--icon-only--small {
+//   line-height: 2;
+// }
+
+// .btn--small {
+//   padding-right: 0.625em;
+//   padding-left: 0.625em;
+// }
+
+// /**
+//  * Pill type buttons with (rounded) ends
+//  * ----------------------------------------------------------------------------
+//  */
+// .btn--soft {
+//   -webkit-border-radius: 200px;
+//   -moz-border-radius: 200px;
+//   -ms-border-radius: 200px;
+//   -o-border-radius: 200px;
+//   border-radius: 200px;
+// }
+
+// .btn--hard {
+//   -webkit-border-radius: 0;
+//   -moz-border-radius: 0;
+//   -ms-border-radius: 0;
+//   -o-border-radius: 0;
+//   border-radius: 0;
+// }
+
+// /**
+//  * Block buttons stretch to the full width of their parent (handy!)
+//  */
+// .btn--block {
+//   display: block;
+//   text-align: center;
+// }
+
+// /**
+//  * Make a button behave like a block at mobile only (also handy)
+//  */
+// @media only screen and (max-width: 37.5em) {
+//   .btn--block-mobile {
+//     text-align: center;
+//     display: block;
+//   }
+// }
+// /**
+//  * Submit buttons
+//  * ----------------------------------------------------------------------------
+//  * FireFox doesn't like line-heights on submit buttons. Stick a class on submit
+//  * buttons and make sure the padding's the same as your default button :)
+//  */
+// .btn--submit {
+//   line-height: 1;
+//   padding-top: 0.625em;
+//   padding-bottom: 0.625em;
+// }
+
+// .btn--submit-large {
+//   line-height: 1;
+//   padding-top: 1.25em;
+//   padding-bottom: 1.25em;
+// }
+
+// .btn--submit-small {
+//   line-height: 1;
+//   padding-top: 0.3125em;
+//   padding-bottom: 0.3125em;
+// }
+
+// /**
+//  * Buttons with icons
+//  * ----------------------------------------------------------------------------
+//  * E.g:
+//     <a class='btn btn--icon'>
+//         <i class='i sprite_icon_edit'></i>
+//         My big button
+//     </a>
+//  * Or,
+//     <a class='btn btn--icon-large--rev'>
+//         My small rounded button
+//         <i class='i sprite_icon_close'></i>
+//     </a>
+//  */
+// .btn--icon-only,
+// .btn--icon-only--small,
+// .btn--icon-only--large {
+//   text-align: center;
+//   min-width: 1em;
+// }
+
+// .btn--icon-only {
+//   padding-left: 0.78125em;
+//   padding-right: 0.78125em;
+// }
+
+// .btn--icon-only--small {
+//   padding-left: 0.5em;
+//   padding-right: 0.5em;
+// }
+
+// .btn--icon-only--large {
+//   padding-left: 1.38889em;
+//   padding-right: 1.38889em;
+// }
+
+// .btn--icon {
+//   padding-left: 0.625em;
+// }
+// .btn--icon > .i {
+//   margin-right: 0.625em;
+// }
+
+// .btn--icon--rev {
+//   padding-right: 0.625em;
+// }
+// .btn--icon--rev > .i {
+//   margin-left: 0.625em;
+// }
+
+// .btn--icon-large {
+//   padding-left: 1.25em;
+//   padding-right: 2.5em;
+// }
+// .btn--icon-large > .i {
+//   margin-right: 0.625em;
+// }
+
+// .btn--icon-large--rev {
+//   padding-left: 2.5em;
+//   padding-right: 1.25em;
+// }
+// .btn--icon-large--rev > .i {
+//   margin-left: 0.625em;
+// }
+
+// .btn--icon-small {
+//   padding-left: 0.41667em;
+//   padding-right: 0.625em;
+// }
+// .btn--icon-small > .i {
+//   margin-right: 0.3125em;
+// }
+
+// .btn--icon-small--rev {
+//   padding-left: 0.625em;
+//   padding-right: 0.3125em;
+// }
+// .btn--icon-small--rev > .i {
+//   margin-left: 0.625em;
+// }
+
+// /**
+//  * Button types
+//  * ----------------------------------------------------------------------------
+//  * E.g:
+//     <a class='btn btn-primary'>
+//         My awesome button
+//     </a> 
+//  */
+// .btn-primary:hover,
+// .btn-secondary:hover,
+// .btn-positive:hover,
+// .btn-negative:hover {
+//   color: #fff;
+// }
+
+// .btn-primary {
+//   background-color: #ef2b05;
+//   background-color: #00CF53;
+//   color: #fff;
+// }
+// .btn-primary:hover {
+//   background-color: #fff;
+//   color: #333;
+// }
+
+// .btn-secondary {
+//   background-color: #999;
+//   color: #fff;
+// }
+// .btn-secondary:hover {
+//   background-color: #777;
+// }
+
+// .btn-tertiary {
+//   background-color: #ddd;
+//   color: #444;
+// }
+// .btn-tertiary:hover {
+//   background-color: #ccc;
+//   color: #333;
+// }
+
+// .btn-positive {
+//   background-color: #3977B1;
+//   color: #fff;
+// }
+// .btn-positive:hover {
+//   background-color: #306596;
+// }
+
+// .btn-negative {
+//   background-color: #eb3930;
+//   color: #fff;
+// }
+// .btn-negative:hover {
+//   background-color: #d8281f;
+// }
+
+// /**
+//  * A common active state makes us look pro as, bro!
+//  */
+// .btn:active {
+//   background-color: #333;
+//   color: #fff;
+// }
+
+// /**
+//  * ----------------------------------------------------------------------------
+//  * Button behaviors
+//  * ----------------------------------------------------------------------------
+//  */
+// /**
+//  * Simple bounces
+//  * ----------------------------------------------------------------------------
+//  */
+// .btn--bounce,
+// .btn--bob {
+//   position: relative;
+//   -webkit-transition: bottom 100ms ease-out;
+//   -moz-transition: bottom 100ms ease-out;
+//   -ms-transition: bottom 100ms ease-out;
+//   -o-transition: bottom 100ms ease-out;
+//   transition: bottom 100ms ease-out;
+// }
+
+// .btn--bounce:active {
+//   bottom: -2px;
+// }
+
+// .btn--bob:active {
+//   bottom: -1px;
+// }
+
+// /**
+//  * Bounce the icon to a side
+//  */
+// .btn--bounce-icon--right .i,
+// .btn--bounce-icon--left .i,
+// .btn--bounce-icon--bottom .i,
+// .btn--bounce-icon--top .i {
+//   position: relative;
+//   -webkit-transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+//   -moz-transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+//   -ms-transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+//   -o-transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+//   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+//   -webkit-transition-duration: 300ms;
+//   -moz-transition-duration: 300ms;
+//   -ms-transition-duration: 300ms;
+//   -o-transition-duration: 300ms;
+//   transition-duration: 300ms;
+// }
+
+// .btn--bounce-icon--right:hover .i {
+//   -webkit-transition-property: left;
+//   -moz-transition-property: left;
+//   -ms-transition-property: left;
+//   -o-transition-property: left;
+//   transition-property: left;
+//   left: .3125em;
+// }
+
+// .btn--bounce-icon--left:hover .i {
+//   -webkit-transition-property: right;
+//   -moz-transition-property: right;
+//   -ms-transition-property: right;
+//   -o-transition-property: right;
+//   transition-property: right;
+//   right: .3125em;
+// }
+
+// .btn--bounce-icon--bottom:hover .i {
+//   -webkit-transition-property: top;
+//   -moz-transition-property: top;
+//   -ms-transition-property: top;
+//   -o-transition-property: top;
+//   transition-property: top;
+//   top: .3125em;
+// }
+
+// .btn--bounce-icon--top:hover .i {
+//   -webkit-transition-property: bottom;
+//   -moz-transition-property: bottom;
+//   -ms-transition-property: bottom;
+//   -o-transition-property: bottom;
+//   transition-property: bottom;
+//   bottom: .3125em;
+// }
+
+// /**
+//  * Inset buttons on block level elements
+//  * ----------------------------------------------------------------------------
+//  */
+// .btn--inset {
+//   position: relative;
+// }
+
+// .btn--inset:after {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   bottom: 0;
+//   right: 0;
+//   visibility: hidden;
+//   -webkit-transition: border-width 100ms ease-out, visibility 100ms;
+//   -moz-transition: border-width 100ms ease-out, visibility 100ms;
+//   -ms-transition: border-width 100ms ease-out, visibility 100ms;
+//   -o-transition: border-width 100ms ease-out, visibility 100ms;
+//   transition: border-width 100ms ease-out, visibility 100ms;
+//   content: " ";
+//   display: block;
+//   border-width: 0;
+//   border-color: inherit;
+//   border-style: solid;
+// }
+
+// .btn--inset:hover:after {
+//   border-width: 4px;
+//   visibility: visible;
+// }
+
+// .btn--inset-primary:after {
+//   border-color: #3977B1;
+// }
+
+// .btn--inset-secondary:after {
+//   border-color: #eb3930;
+// }
+
+// .btn--inset-large:hover:after {
+//   border-width: 8px;
+// }
+
+// .btn--inset-small:hover:after {
+//   border-width: 1px;
+// }
+
+// /**
+//  * Buttons that show a loading indicator when clicked
+//  * ----------------------------------------------------------------------------
+//  */
+// .btn--spinner {
+//   position: relative;
+//   cursor: default;
+// }
+
+// .btn--spinner .btn--label {
+//   opacity: 0;
+//   visibility: hidden;
+// }
+
+// .btn--spinner:after {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   display: inline-block;
+//   content: url("/static/images/spinner-image.png");
+//   text-align: center;
+//   margin-left: auto;
+//   margin-right: auto;
+//   width: 100%;
+// }
+
+// .btn--spinner--text:after {
+//   content: attr(data-btn-loading-indicator);
+// }
+
+
+
+// .btn-facebook {
+//     background-color: #3B5998;
+// }
+
+// .btn-twitter {
+//     background-color: #4099ff;
+// }
 
 

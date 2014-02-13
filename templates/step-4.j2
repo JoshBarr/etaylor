@@ -1,0 +1,32 @@
+{% import "macros.j2" as macros %}
+
+<div id='album'  class='block block--fullscreen  block--dark'>
+    <h2>Here's your one-of-a-kind copy of Up:</h2>
+
+    <div class='cd-art ' data-cover>
+        <div class='' style='' data-sticky-placeholder>
+            <div id="cd_face" class="cd-words">
+                
+            </div>
+            <img src="/{{ album.full }}" class="cd-image" alt="">
+            
+        </div>
+    </div>
+    <div class='text--center mx' data-sticky-hide>
+        <a href='/{{ album.zip }}' class='btn btn-primary' data-download-btn>
+            Download it.
+        </a>
+        <a href='/email-me' class='btn btn-primary'>
+            Email me the link
+        </a>
+        <form action="/download/{{uid}}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            {{ macros.render_field(email_form.email) }}
+            <button type="submit" class="btn">
+                Email me
+            </button>
+        </form>
+        <a href="/credits">Album credits</a>
+    </div>
+</div>

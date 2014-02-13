@@ -13,10 +13,11 @@
 </head>
 <body>
 
-<div>
-	{% block content %}
-	{% endblock %}
-</div>
+{% if not hide_brush %}<div class="brush"></div>{% endif %}
+
+{% block content %}
+{% endblock %}
+
 
 {% block scripts %}
 <script type="text/javascript">
