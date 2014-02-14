@@ -21,27 +21,32 @@ import errno
 from flask.ext.mail import Mail, Message
 
 
-
-
-# todo
+# TODO
+# 
 # pretty album art
 # email users
 # save emails in database
 # make it download zip file of tracks
 # ajaxy in-page stuff
 # working... / taking to printer ... / drying ink... 
+# todo: hook up gmail 
+# python -m smtpd -n -c DebuggingServer localhost:1025
+
 
 
 # -----------------------------------------------------------------------------
 # App setup
 # -----------------------------------------------------------------------------
 
+MAIL_PORT=1025
+MAIL_SERVER='localhost'
+
 app = Flask(__name__)
 CsrfProtect(app)
-mail = Mail(app)
 
 
 app.config.from_object(__name__)
+mail = Mail(app)
 
 # Load default config and override config from an environment variable
 app.config.update(dict(
@@ -54,6 +59,7 @@ app.config.update(dict(
 
 app.config.from_envvar('UP_SETTINGS', silent=True)
 
+    
 
 
 # Utils
@@ -202,6 +208,19 @@ class Answers(object):
         newid = cursor.lastrowid
         db.commit()
         return newid
+
+
+class Email(object):
+    def store(self, address, artwork_id):
+        db = get_db()
+        cursor = db.cursor()
+
+        cursor.execute('INSERT into emails (address, time, artwork_id) values (?, ?, ?)',
+                 [address, time.time(), artwork_id])
+        newid = cursor.lastrowid
+        db.commit()
+        return newid
+
 
 
 # -----------------------------------------------------------------------------
@@ -377,14 +396,17 @@ def preview(artwork_id):
             email_form = EmailForm(request.form)
             
             if email_form.validate():
+                email_addy = email_form.email.data
                 email_body = render_template('email-plain.j2', album=album)
                 email_html = render_template('email.j2', album=album)
                 send_email(
-                    email_form.email.data,
+                    email_addy,
                     "Album download from thisisetaylor.com",
                     email_body,
                     email_html
                 )
+
+                Email().store(email_addy, artwork_id)
 
                 session['music_video'] = True
                 return redirect(url_for('music_video'))
