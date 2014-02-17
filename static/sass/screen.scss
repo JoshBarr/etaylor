@@ -1,7 +1,56 @@
-html {
-  background: #202020 url(../images/noise.png);
+@mixin media($breakpoint) {
+    @if $breakpoint == 'small' {
+        @media only screen and (max-width: 37.5em) {
+            @content;
+        }
+    }
+    @if $breakpoint == 'xsmall' {
+        @media only screen and (max-width: 25em) {
+            @content;
+        }
+    }
+
 }
 
+@mixin vendor($name, $argument) {
+    -webkit-#{$name}: #{$argument};
+    -ms-#{$name}: #{$argument};
+    -moz-#{$name}: #{$argument};
+    -o-#{$name}: #{$argument};
+    #{$name}: #{$argument};
+}
+
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content; 
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  } 
+}
+
+
+
+%page-bg {
+    background: #202020 url(../images/noise.png);
+}
+
+html {
+  @extend %page-bg;
+}
+
+.view--album {
+    background: #333;
+    body {
+        @extend %page-bg;
+    }
+}
 
 
 body {
@@ -10,7 +59,15 @@ body {
     // background: #fff url('../images/noise.png');
     color: #111;
     font-family: sans-serif;
+    line-height: 1.5;
 }
+
+
+h1, h2, h3, h4, h5, h6, p, ul, ol {
+  margin-bottom: 0;
+}
+
+
 
 
 .antialiased, h2, .question__answer, .intro, .btn-primary {
@@ -21,8 +78,28 @@ h2, .question__answer, .intro {
   font-size: 1.5em;
   line-height: 1.4;
   font-weight: 100;
+  @include media('small') {
+    font-size: 1.2em;
+    line-height: 1.5;
+  }
 }
 
+
+.small {
+  font-size: .875em;
+}
+
+.tiny {
+    font-size: .75em;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.fileinfo {
+    display: inline-block;
+}
 
 .block {
   padding: 1.5em 2em;
@@ -36,21 +113,31 @@ h2, .question__answer, .intro {
 
 .block--dark {
   color: #fff;
-  max-width: 39em;
+  .link {
+    color: #fff;
+  }
 }
 
-.confession_message textarea{
+.block--album {
+  background: #333;
+}
+
+.nice-line-length {
+    max-width: 39em;
+}
+
+.question__answer {
     border: 0;
-    // font-size: 1.875em;
     padding: 0;
     font-family: helvetica, sans-serif;
     width: 100%;
     height: 130px;
     background-color: transparent;
     color: #9DE7FF;
+    @extend %mHalf;
 }
 
-.confession_message textarea:focus{
+.question__answer:focus{
     outline:none;
 }
 
@@ -146,6 +233,33 @@ button {
   }
 }
 
+.btn-block--q-small {
+    @include media('small') {
+        display: block;
+        text-align: center;
+    }
+}
+
+.btn-block--q-xsmall {
+    @include media('xsmall') {
+        display: block;
+        text-align: center;
+    }
+}
+
+button.btn-block--q-small {
+    @include media('small') {
+        width: 100%; // For buttons!
+    }
+}
+
+button.btn-block--q-xsmall {
+    @include media('xsmall') {
+        width: 100%; // For buttons!
+    }
+}
+
+
 .brush {
   position: absolute;
   top: 0;
@@ -153,17 +267,16 @@ button {
   padding-bottom: 22%;
   background: url(../images/brush.png) 0 0 no-repeat;
   background-size: cover;
-  // max-width: 56.125em;
 }
 
-.brush + * {
-  margin-top: 13%;
+body > .block:first-child {
+  padding-top: 11%;
   position: relative;
+  z-index: 2;
 }
 
 
-
-@-webkit-keyframes show {
+@include keyframes(show) {
     0% {
         opacity: 0;
     }
@@ -178,7 +291,7 @@ button {
     }
 }
 
-@-webkit-keyframes grow {
+@include keyframes(grow) {
     0% {
         width: 0%;
     }
@@ -187,16 +300,19 @@ button {
     }
 }
 
-@-webkit-keyframes up {
+@include keyframes(up) {
     0% {
-        -webkit-transform: translateY(5%);
+        @include vendor(transform, translateY(5%));
         opacity: 0;
     }
     100% {
-        -webkit-transform: translateY(0);
+        @include vendor(transform, translateY(0));
         opacity: 1;
     }
 }
+
+
+
 
 .working {
     position: relative;
@@ -242,13 +358,22 @@ button {
     width: 0;
     display: block;
     -webkit-animation: grow 14s both 0s ease-in-out;
+    position: absolute;
+    top: 0;
+}
+
+.progress-track {
+    background: #000;
+    width: 100%;
+    height: 1em;
+    position: relative;
 }
 
 
 .list-unstyled {
-  margin-left: 0;
+  padding-left: 0;
   list-style: none;
-  margin: 0;
+  margin-bottom: 0;
 }
 
 .errors {
@@ -260,6 +385,270 @@ button {
   -webkit-animation: up .5s both 0s ease-in-out;
 }
 
+
+.text--center {
+    text-align: center;
+}
+
+.cd-art{
+    @extend %m;
+    line-height: 0;
+}
+
+
+    .cd-image {
+        width: 100%;
+    }
+
+    .cd-image,
+    .album-line-length {
+        max-width: 31.25em;
+    }
+
+
+.block--center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+
+// Form fields stuff..
+
+
+%field {
+    padding: .5em;
+    font-family: sans-serif;
+    font-size: .875em;
+}
+
+input,
+textarea {
+    &:focus {
+        outline: none;
+
+    }
+}
+
+
+input[type="text"] {
+    @extend %field;
+}
+
+
+.form {
+
+}
+
+.form--inline {
+    @extend %m;
+}
+
+
+
+.form--inline {
+    .form__field,
+    .form__submit {
+        display: inline-block;
+
+    }
+    .form__field {
+        input {
+            border: 0;
+            padding: .875em .5em;
+            
+        }
+        @include media('xsmall') {
+            display: block;
+            input {
+                display: block;
+                width: 95%;
+                padding-left: 2.5%;
+                padding-right: 2.5%;
+            }
+        }
+    }
+    .form__submit {
+
+    }
+}
+
+.form__actions {
+
+}
+
+.form__errors {
+    @extend %m;
+    li {
+        padding: .5em;
+    }
+}
+
+
+
+%mHalf {
+    margin-top: .75em;
+}
+
+%m {
+  margin-top: 1.5em;
+}
+
+%m2 {
+  margin-top: 3em;
+}
+
+.m {
+    @extend %m;
+}
+
+.mb0 {
+    margin-bottom: 0;
+}
+.pb0 {
+    padding-bottom: 0;
+}
+
+// Zip support...
+
+.no-zip-show {
+    display: none;
+}
+
+.no-zip-hide {
+    display: block;
+}
+
+.no-zip .no-zip-show {
+    display: block;
+}
+
+.no-zip .no-zip-hide {
+    display: none;
+}
+
+
+// Def lists
+
+.dl {
+    overflow: hidden;
+}
+
+    .dl > dt,
+    .dl > dd {
+        width: 50%;
+        float: left;
+        text-align: left;
+        margin-left: 0;
+        padding-top: .5em;
+        padding-bottom: .5em;
+        @include media(small) {
+            width: 100%;
+            float: none;
+        }
+    }
+
+    .dl > dt {
+        @include media(small) {
+            padding-top: 1em;
+            font-weight: bold;
+        }
+    }
+
+    .dl > dd {
+        text-align: right;
+        color: #ccc;
+        @include media(small) {
+            text-align: left;
+            padding-top: .125em;
+            padding-bottom: 1em;
+        }
+    }
+
+    %dl-border-top {
+        border-top: solid 1px #444;
+    }
+
+    .dl > dd + dt,
+    .dl > dd + dt + dd {
+        @extend %dl-border-top;
+        @include media(small) {
+            border-top: none;
+        }
+    }
+
+    .dl > dd + dt {
+       @include media(small) {
+            border-top: solid 1px #444;
+       }
+    }
+
+%clearfix {
+    &:after {
+        content: "";
+        display: table;
+        clear: both; 
+    }
+}
+
+.nav {
+    @extend %clearfix;
+    list-style: none;
+    padding-left: 0;
+    &:first-child {
+        margin-top: 0;
+    }
+}
+    .nav > li {
+        float: left;
+    }
+
+
+.brush {
+    @include vendor(transition, opacity .2s ease-out);
+    z-index: 1;
+}
+
+.site-nav {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    left: 0;
+    z-index: 3;
+    cursor: pointer;
+}
+    
+    .site-nav__container {
+        @include media(small) {
+            padding-top: 1em;
+        }
+        opacity: 0;
+        @include vendor(transition, opacity .2s ease-out);
+    }
+
+    .site-nav:hover .site-nav__container {
+        opacity: 1;
+    }
+
+    .site-nav:hover + .brush {
+        opacity: .12;
+    }
+
+    .site-nav__item {
+        color: #fff;
+
+        & + & {
+            margin-left: 1em;
+        }
+
+    }
+
+    .site-nav__item--current {
+        color: #ff0000;
+    }
 
 // h1 {
 //     font-size: 4em;
@@ -433,9 +822,7 @@ button {
 
 
 
-// .text--center {
-//     text-align: center;
-// }
+
 
 // .cd-art {
 //   position: relative;

@@ -1,8 +1,6 @@
-
 <div id='working' class='block block--fullscreen ' data-stretchy-block>
     <div class='block__background block__background-3'></div>
-    <div class=' block block--dark block--narrow'>
-
+    <div class='block--center block--dark album-line-length'>
 
         <h2 class='working'>
             &nbsp;
@@ -15,11 +13,16 @@
             <span>knock, knock</span>
         </h2>
         
-
-        <div class="progress-bar"></div>
-
+        <div class="m">
+            <div class="progress-track">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
         <p>While you wait, share it.</p>
-        <span class='st_facebook_hcount' st_url="" st_title="" st_image="" st_summary="" displayText='Facebook'></span>
-        <span class='st_twitter_hcount' st_via="thisisetaylor" st_url="http://shar.es/U1xuU" st_title="{{ question.hashtag }} [ANSWER HERE]"   displayText='Tweet'></span>
+        <div class='m'>
+            <span class='st_facebook_hcount' st_url="http://thisisetaylor.com" st_title="{{ question.hashtag }} {{answer.text|safe}}" st_image="" st_summary="" displayText='Facebook'></span>
+            <span class='st_twitter_hcount' st_via="thisisetaylor" st_url="http://shar.es/U1xuU" st_title="{{ question.hashtag }} {{answer.text|safe}}"   displayText='Tweet'></span> 
+        </div>
+        
     </div>
 </div>

@@ -1,7 +1,13 @@
 {% extends "template.j2" %}
 {% import "macros.j2" as macros %}
 
-{% set hide_brush = true %}
+{#% set hide_brush = true %#}
+{% set html_class = "view--album" %}
+
+{% if errors %}
+{% set html_class = "view--album no-zip" %}
+{% endif %}
+
 {% block content %}
 	{% include "step-4.j2" with context %}
 {% endblock %}

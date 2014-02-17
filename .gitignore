@@ -2,3 +2,6 @@
 static/artwork/*
 node_modules
 bower_components
+static/tracks/*
+var/download/*
+dist.platforms/

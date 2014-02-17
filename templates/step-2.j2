@@ -1,23 +1,17 @@
 <div data-state="question" id="question" class='block block--fullscreen' data-stretchy-block>
     <div class='block__background block__background-2'></div>
-    <div class='block block--dark block--narrow'>
-        <div class='row provocation'>
-            <h2 class=''>
-
-                <span class='question__q'>Q:</span> {{ question.title }}
-            </h2>
-        </div>
+    <div class='block--dark album-line-length block--center'>
+        <h2 class=''>
+            <span class='question__q'>Q:</span> {{ question.title }}
+        </h2>
 
         <form method="post" action="/question">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
             
-            <div class="confession_message">
-                <textarea class='question__answer' id='question' name='question' maxlength='85' placeholder="A:"></textarea>
-                {#{ form.question()|safe }#}
-            </div>
+            {{ form.question(placeholder="A:", maxlength="85", class="question__answer")|safe }}
 
             {% if form.question.errors %}
-                <ul class="errors list-unstyled block block--s">
+                <ul class="errors list-unstyled form__errors">
                     {% for error in form.question.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
@@ -25,21 +19,11 @@
             {% endif %}
             <p>
 
-            <button type="submit" class='btn btn-primary js-hide'>
+            <button type="submit" class='btn btn-primary small btn-block--q-small'>
                 Get the album
             </button> 
             </p> 
-            <p>
-                {#<a href="#working" data-scroll-href id="submit" class='btn btn-primary js-hide'>
-                    Get the album
-                </a>
-                <noscript>#}
-                      
-                {#</noscript>#}
-            </p>
         </form>
 
-        <div class=''>
-        </div>
     </div>
 </div>

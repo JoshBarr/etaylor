@@ -20,33 +20,26 @@ import errno
 
 from flask.ext.mail import Mail, Message
 
+from concurrent import futures
 
+# -----------------------------------------------------------------------------
 # TODO
+# -----------------------------------------------------------------------------
 # 
 # pretty album art
-# email users
-# save emails in database
-# make it download zip file of tracks
 # ajaxy in-page stuff
 # working... / taking to printer ... / drying ink... 
-# todo: hook up gmail 
-# python -m smtpd -n -c DebuggingServer localhost:1025
-
 
 
 # -----------------------------------------------------------------------------
 # App setup
 # -----------------------------------------------------------------------------
 
-MAIL_PORT=1025
-MAIL_SERVER='localhost'
-
 app = Flask(__name__)
 CsrfProtect(app)
 
-
 app.config.from_object(__name__)
-mail = Mail(app)
+
 
 # Load default config and override config from an environment variable
 app.config.update(dict(
@@ -54,12 +47,21 @@ app.config.update(dict(
     DEBUG=True,
     SECRET_KEY='\xcd\x8f\x14\xc1\x1f\xfd\xc8\xd04\xefl\xccEWWl8\xd3C\xa6\x99\x10\xc1A',
     USERNAME='admin',
-    PASSWORD='default'
+    PASSWORD='default',
+
+
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=465,
+    MAIL_USE_SSL=True,
+    MAIL_USERNAME = 'e@thisisetaylor.com',
+    MAIL_PASSWORD = 'HarryConnick67'
 ))
 
-app.config.from_envvar('UP_SETTINGS', silent=True)
 
-    
+
+
+app.config.from_envvar('UP_SETTINGS', silent=True)
+mail = Mail(app)
 
 
 # Utils
@@ -87,10 +89,6 @@ class Album(object):
     genre = "Rap"
     year = "2014"
     composer = "Elliot Taylor"
-    artwork_template = "/static/album/up.png"
-    input_path = "var/tracks/"
-    output_path = "static/tracks/"
-    temp_path = "var/download/"
     tracks = [
         {
             "filename": "1-e-taylor-little-empire.mp3",
@@ -115,60 +113,9 @@ class Album(object):
         }
     ]
 
-    def copy_track(self, song, answer_id):
-        song_input_filename = "%s%s" % (self.input_path, song['filename'])
-        song_output_filename = "%s%s/%s" % (self.temp_path, answer_id, song['filename'])
-        shutil.copy2(song_input_filename, song_output_filename)
-        return song_output_filename
+    def get_tracks(self):
+        return self.tracks
 
-    def process(self, answer_id, answer, image_path, thumbnail_path):
-        output_dir = "%s%s" % (self.output_path, answer_id)
-        temp_dir = "%s%s" % (self.temp_path, answer_id)
-        image_data = open(image_path, "rb").read()
-        thumbnail_data = open(thumbnail_path, "rb").read()
-        zip_output = "%s/e-taylor-up-side-a.zip" % (output_dir)
-
-        if not os.path.exists(zip_output):
-            
-            if not os.path.exists(temp_dir):
-                mkdir_p(temp_dir)
-
-            if not os.path.exists(output_dir):
-                mkdir_p(output_dir)
-
-            track_counter = 1;
-
-            for song in self.tracks:
-                song_output_filename = self.copy_track(song, answer_id)
-
-                audiofile = eyed3.load(song_output_filename)
-                audiofile.tag.artist = u"%s" % (self.artist)
-                audiofile.tag.album = u"%s" % ( self.title )
-                audiofile.tag.title = u"%s" % ( song['title'] )
-                audiofile.tag.track_num = track_counter
-
-                audiofile.tag.images.set(2,image_data,"image/png",u"%s - %s" % (self.artist, self.title))
-                
-                audiofile.tag.save()
-                track_counter = track_counter + 1
-            
-            self.zip(temp_dir, zip_output)
-
-        return zip_output
-
-
-    def zip(self, src, dst):
-        zf = zipfile.ZipFile("%s" % (dst), "w")
-        abs_src = os.path.abspath(src)
-        for dirname, subdirs, files in os.walk(src):
-            for filename in files:
-                absname = os.path.abspath(os.path.join(dirname, filename))
-                arcname = absname[len(abs_src) + 1:]
-                print 'zipping %s as %s' % (os.path.join(dirname, filename),
-                                            arcname)
-                zf.write(absname, arcname)
-        zf.close()
-        shutil.rmtree(src)
 
 
 class Questions(object):
@@ -209,6 +156,24 @@ class Answers(object):
         db.commit()
         return newid
 
+    def get (self, answer_id):
+        db = get_db()
+        cur = db.execute('SELECT text, time, question_id from answers where id = %s' % (answer_id))
+        entry = cur.fetchone()
+        if (len(entry) > 0):
+            text = entry[0]
+            time = entry[1]
+            question_id = entry[2]
+            return {
+                "id": answer_id,
+                "text": text,
+                "time": time,
+                "question_id": question_id
+            }
+        else:
+            return None
+
+
 
 class Email(object):
     def store(self, address, artwork_id):
@@ -228,7 +193,7 @@ class Email(object):
 # -----------------------------------------------------------------------------
 
 class QuestionForm(Form):
-    question = TextAreaField('Your answer', [validators.Length(min=2, max=85)])
+    question = TextAreaField('Your answer', [validators.Length(min=2, max=85, message='Your answer should be between 2 and 85 characters long.')])
 
 
 class EmailForm(Form):
@@ -242,20 +207,35 @@ class EmailForm(Form):
 class AlbumArtwork(object):
     artwork_template = "/static/album/up.png"
     foreground_template = "static/images/placeholder.png"
+    image_output_path = "static/artwork/"
+    track_input_path = "var/tracks/"
+    track_temp_path = "var/download/"
+    track_output_path = "static/tracks/"
     artwork = None
-    output_path = "static/artwork/"
+    image_path = None
+    thumbnail_path = None
+    zip_file_path = None
+    
+    def create(self, answer_id=None):
+        self.answer_id = answer_id
+        self.image_path = '%sartwork-%s-500x500.png' % (self.image_output_path, answer_id)
+        self.thumbnail_path = '%sartwork-%s-140x140.png' % (self.image_output_path, answer_id)
+        self.output_dir = "static/tracks/%s" % (answer_id)
+        self.zip_file_path = "%s/e-taylor-up-side-a.zip" % (self.output_dir)
+        self.artwor_id = self.store(self.answer_id, self.image_path, self.thumbnail_path, self.zip_file_path)
+        return self
 
     def render(self, answer, answer_id, random_answers):
 
-        other_answers = [answer]
+        all_answers = [answer]
 
         for row in random_answers:
-            other_answers.append(row[0])
+            all_answers.append(row[0])
 
-        # shuffle(other_answers)
+        shuffle(all_answers)
 
-        image_path = '%sartwork-%s-500x500.png' % (self.output_path, answer_id)
-        thumbnail_path = '%sartwork-%s-140x140.png' % (self.output_path, answer_id)
+        image_path = self.image_path
+        thumbnail_path = self.thumbnail_path
         
         with Image(filename=self.foreground_template) as original:
             with original.convert('png') as album_details:
@@ -263,13 +243,11 @@ class AlbumArtwork(object):
                     with Color('white') as bg:
                         with Image(width=500, height=500, background=bg) as image:
                             
-
                             draw.font = 'static/fonts/league_gothic.otf'
                             draw.font_size = 40
                             counter = 40
 
-
-                            _text = ". ".join(other_answers)
+                            _text = ". ".join(all_answers)
 
                             lines = textwrap.wrap(_text, 45)
 
@@ -288,15 +266,77 @@ class AlbumArtwork(object):
                 thumb.resize(140, 140)
                 thumb.save(filename=thumbnail_path)
 
-        zip_file = Album().process(answer_id, answer, image_path, thumbnail_path)
+        self.process_tracks(answer_id, answer, image_path, thumbnail_path, self.zip_file_path)
+        return self.zip_file_path 
 
-        return self.store(answer_id, image_path, thumbnail_path, zip_file)
+    def copy_track(self, song, answer_id):
+        song_input_filename = "%s%s" % (self.track_input_path, song['filename'])
+        song_output_filename = "%s%s/%s" % (self.track_temp_path, answer_id, song['filename'])
+        print "copying: ", song_input_filename, song_output_filename
+        shutil.copy2(song_input_filename, song_output_filename)
+        return song_output_filename
 
+    def process_tracks(self, answer_id, answer, image_path, thumbnail_path, zip_output):
+        output_dir = "%s%s" % (self.track_output_path, answer_id)
+        temp_dir = "%s%s" % (self.track_temp_path, answer_id)
+        image_data = open(image_path, "rb").read()
+        thumbnail_data = open(thumbnail_path, "rb").read()
+
+        # Get an album instance (they're all the mother flippin same...)
+        album = Album()
+
+        if not os.path.exists(zip_output):
+            
+            if not os.path.exists(temp_dir):
+                mkdir_p(temp_dir)
+
+            if not os.path.exists(output_dir):
+                mkdir_p(output_dir)
+
+            track_counter = 1;
+
+            for song in album.tracks:
+                song_output_filename = self.copy_track(song, answer_id)
+
+                audiofile = eyed3.load(song_output_filename)
+                print audiofile.tag
+
+                if not audiofile.tag:
+                    audiofile.tag = eyed3.id3.Tag()
+                    audiofile.tag.file_info = eyed3.id3.FileInfo(song_output_filename)
+
+                audiofile.tag.artist = u"%s" % ( album.artist )
+                audiofile.tag.album = u"%s" % ( album.title )
+                audiofile.tag.title = u"%s" % ( song['title'] )
+                audiofile.tag.track_num = track_counter
+
+                audiofile.tag.images.set(2, image_data, "image/png", u"%s - %s" % (album.artist, album.title))
+                
+                audiofile.tag.save()
+                track_counter = track_counter + 1
+            
+            self.zip(temp_dir, zip_output)
+
+        return zip_output
+
+    def zip(self, src, dst):
+        zf = zipfile.ZipFile("%s" % (dst), "w")
+        abs_src = os.path.abspath(src)
+
+        for dirname, subdirs, files in os.walk(src):
+            for filename in files:
+                absname = os.path.abspath(os.path.join(dirname, filename))
+                arcname = absname[len(abs_src) + 1:]
+                print 'zipping %s as %s' % (os.path.join(dirname, filename),
+                                            arcname)
+                zf.write(absname, arcname)
+        zf.close()
+        shutil.rmtree(src)
 
     def store(self, answer_id, image_path, thumbnail_path, zip_file):
         db = get_db()
         cursor = db.cursor()
-        cursor.execute('INSERT into artwork (answer_id, fullsize_url, thumbnail_url, zip_file) values (?,?,?,?)',
+        cursor.execute('INSERT or REPLACE into artwork (answer_id, fullsize_url, thumbnail_url, zip_file) values (?,?,?,?)',
                  [answer_id, image_path, thumbnail_path, zip_file])
         db.commit()
         return cursor.lastrowid
@@ -314,6 +354,19 @@ class AlbumArtwork(object):
         except:
             return None
             
+    def get_by_answer(self, answer_id=1):
+        db = get_db()
+        cur = db.execute('SELECT id, fullsize_url, thumbnail_url, zip_file from artwork where answer_id = %s' % (answer_id))
+        entry = cur.fetchone()
+        try:
+            return {
+                "id": entry[0],
+                "full": entry[1],
+                "thumb": entry[2],
+                "zip": entry[3]
+            }
+        except:
+            return None
 
 # -----------------------------------------------------------------------------
 # Database stuff
@@ -361,35 +414,48 @@ def question():
         if request.form:
             form = QuestionForm(request.form)
             if form.validate():
-                artwork = AlbumArtwork()
                 answers = Answers()
-                random_answers = answers.get_random_answers()
                 answer_id = answers.store(form.question.data, album.question)
-                unique_cover_id = artwork.render(form.question.data, answer_id, random_answers)
-                return redirect('/share/%s' % (unique_cover_id))
+                return redirect('/share/%s' % (answer_id))
             else:
                 errors.append("moo")
 
     return render_template('question.j2', form=form, album=album, question=question, errors=[])
 
 
-@app.route('/share/<int:artwork_id>')
-def share(artwork_id):
-    album = AlbumArtwork().get(artwork_id)
-    question = Questions().get(Album().question)
-    return render_template('share.j2', question=question, uid=artwork_id)
+@app.route('/share/<int:answer_id>')
+def share(answer_id):
+    questions = Questions()
+    album = Album()
+    answers = Answers()
+    artwork = AlbumArtwork().create(answer_id)
+
+    answer = answers.get(answer_id)
+    random_answers = answers.get_random_answers()
+
+    session["download"] = None
+
+    executor = futures.ThreadPoolExecutor(max_workers=1)
+    future = executor.submit(async_do_render, artwork, answer["text"], answer_id, random_answers)
+    future.add_done_callback(async_rendered)
+    question = questions.get(album.question)
+
+    return render_template('share.j2', question=question, answer=answer, artwork_id=answer_id)
 
 
 @app.route('/download', methods=['GET'])
 def download():
     return redirect(url_for('start'))
 
-@app.route('/download/<int:artwork_id>', methods=['GET', 'POST'])
-def preview(artwork_id):
 
-    album = AlbumArtwork().get(artwork_id)
+@app.route('/download/<int:answer_id>', methods=['GET', 'POST'])
+def preview(answer_id):
+
+    album = AlbumArtwork().get_by_answer(answer_id)
     email_form = EmailForm(request.form)
     errors = []
+
+    session["download"] = request.url
 
     if request.method == "POST":
         if request.form:
@@ -413,7 +479,7 @@ def preview(artwork_id):
             else:
                 errors.append("bad email addy")
 
-    return render_template('download.j2', album=album, email_form=email_form, uid=artwork_id, errors=errors)
+    return render_template('download.j2', album=album, email_form=email_form, uid=answer_id, errors=errors)
 
 
 def send_email(email, subject, body, html):
@@ -422,7 +488,7 @@ def send_email(email, subject, body, html):
     their phones/tablets
     """
     msg = Message(subject,
-              sender=("E Taylor","hello@thisisetaylor.com"),
+              sender=("E Taylor","e@thisisetaylor.com"),
               recipients=[email])
     msg.body = body
     msg.html = html
@@ -443,7 +509,24 @@ def music_video():
 
 @app.route('/credits')
 def credits():
-    return render_template('credits.j2')
+    referrer = request.referrer
+    return render_template('credits.j2', referrer=referrer)
+
+
+# -----------------------------------------------------------------------------
+# Events
+# -----------------------------------------------------------------------------
+
+
+def async_do_render(artwork, a, _id, ls):
+    ctx = app.app_context()
+    with app.app_context():
+
+        res = artwork.render(a, _id, ls)        
+        return res, ctx
+
+def async_rendered(future):
+    ctx = future.result()[1]
 
 # -----------------------------------------------------------------------------
 # Init

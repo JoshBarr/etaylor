@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="{{ html_class }}">
 <head>
 	<meta charset="utf-8">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
@@ -13,10 +13,36 @@
 </head>
 <body>
 
-{% if not hide_brush %}<div class="brush"></div>{% endif %}
 
 {% block content %}
 {% endblock %}
+
+
+
+
+
+<div class="site-nav">
+	<div class="block--center block text--center site-nav__container">
+		<a {% if request.path != "/" %} href="/"{% endif %} class='site-nav__item  {% if request.path == "/" %}site-nav__item--current{% endif %}'>Home</a>
+		
+		{% if session['download'] %}
+			<a {% if not request.path.startswith("/download") %} href="{{ session['download'] }}" {% endif %} class='site-nav__item  {% if request.path.startswith("/download") %}site-nav__item--current{% endif %}'>Download</a>
+		{% endif %}
+
+		{% if request.path.startswith("/share") %}
+			<a class='site-nav__item  site-nav__item--current'>Working...</a>
+
+		{% endif %}
+
+		<a {% if request.path != "/credits" %} href="/credits" {% endif %} class='site-nav__item {% if request.path == "/credits" %}site-nav__item--current{% endif %}''>Credits</a>
+	</div>
+</div>
+
+
+
+{% if not hide_brush %}
+<div class="brush"></div>
+{% endif %}
 
 
 {% block scripts %}

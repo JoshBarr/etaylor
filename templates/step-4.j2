@@ -1,32 +1,58 @@
 {% import "macros.j2" as macros %}
 
-<div id='album'  class='block block--fullscreen  block--dark'>
-    <h2>Here's your one-of-a-kind copy of Up:</h2>
 
+<div id='album'  class='block block--fullscreen pb0 block--dark text--center'>
+    <h2>E Taylor <span class='nowrap'>- Up (Side A)</span></h2>
+    <p class='antialiased small'>
+        Artwork by you, and a bunch of other people
+        <a class='link nowrap' href="/credits">Album credits</a>
+</p>
     <div class='cd-art ' data-cover>
         <div class='' style='' data-sticky-placeholder>
-            <div id="cd_face" class="cd-words">
-                
-            </div>
-            <img src="/{{ album.full }}" class="cd-image" alt="">
-            
+            <a href="/{{ album.zip }}">
+                <img src="/{{ album.full }}" class="cd-image" alt="">
+            </a>
         </div>
     </div>
-    <div class='text--center mx' data-sticky-hide>
-        <a href='/{{ album.zip }}' class='btn btn-primary' data-download-btn>
-            Download it.
+</div>
+<div class='block block--fullscreen block--album   block--dark  no-zip-hide'>
+    <div class="text--center">
+        <a href='/{{ album.zip }}' class='btn btn-primary btn-block--q-small ' data-download-btn>
+            Download <span class='tiny uppercase fileinfo'>Zip, 42.1MB</span>
         </a>
-        <a href='/email-me' class='btn btn-primary'>
-            Email me the link
-        </a>
+        <p class='small antialiased'>
+            <a href="#" class='link' data-toggle-zip-status>Can't download this kind of file?</a>
+        </p>
+    </div>
+</div>
+<div class='block block--dark block--album  no-zip-show'>
+    <div class='nice-line-length   text--center block--center'>
         <form action="/download/{{uid}}" method="post">
+            <h2>Looks like your device can't download ZIP files.</h2>
+            <p class='antialiased'>We can email you a link to the album:</p>
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 
-            {{ macros.render_field(email_form.email) }}
-            <button type="submit" class="btn">
-                Email me
-            </button>
+            <div class="form--inline">
+                {% with field = email_form.email  %}
+                    <div class="form__field">
+                        {{ field(placeholder='your@email.com')|safe }}
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block--q-xsmall form__submit">
+                        Email me
+                    </button> 
+                    {% if field.errors %}
+                        <ul class='list-unstyled errors form__errors'>
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    
+                {% endwith %}
+            </div>
+            <p class='small antialiased'>
+                <a href="#" class='link' data-toggle-zip-status>Let me download it anyway</a>
+            </p>
         </form>
-        <a href="/credits">Album credits</a>
     </div>
 </div>
