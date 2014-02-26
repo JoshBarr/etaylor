@@ -10,7 +10,7 @@ from flask_wtf.csrf import CsrfProtect
 from random import shuffle
 from wand.image import Image
 from wand.display import display
-from wand.drawing import Drawing
+from wand.drawing import Drawing, FONT_METRICS_ATTRIBUTES
 from wand.color import Color
 import textwrap
 import eyed3
@@ -21,6 +21,8 @@ import errno
 from flask.ext.mail import Mail, Message
 
 from concurrent import futures
+from random import randint
+
 
 # -----------------------------------------------------------------------------
 # TODO
@@ -141,7 +143,7 @@ class Answers(object):
 
     def get_random_answers(self):
         db = get_db()
-        cur = db.execute('SELECT text, time, question_id from answers limit 50')
+        cur = db.execute('SELECT text, time, question_id from answers limit 150')
         entries = cur.fetchall()
         shuffle(entries)
         return entries
@@ -206,7 +208,7 @@ class EmailForm(Form):
 
 class AlbumArtwork(object):
     artwork_template = "/static/album/up.png"
-    foreground_template = "static/images/placeholder.png"
+    foreground_template = "static/images/placeholder-white.png"
     image_output_path = "static/artwork/"
     track_input_path = "var/tracks/"
     track_temp_path = "var/download/"
@@ -227,39 +229,125 @@ class AlbumArtwork(object):
 
     def render(self, answer, answer_id, random_answers):
 
-        all_answers = [answer]
+        all_answers = []
 
         for row in random_answers:
             all_answers.append(row[0])
 
         shuffle(all_answers)
 
+
+        total_answers = len(all_answers)
+        total_center = int(total_answers/2)
+
+        # anywhere in the middle of the pack.
+        user_answer_pos = randint(total_center - int(total_answers/4), total_center + int(total_answers/4))
+
+        if user_answer_pos < 0:
+            user_answer_pos = 0
+
+        if user_answer_pos >= total_answers:
+            user_answer_pos = total_answers
+
+
+        all_answers.insert(user_answer_pos, answer)
+
+
         image_path = self.image_path
         thumbnail_path = self.thumbnail_path
         
+        # num_lines = 28
+        font_size = 22
+        line_height = 1.636363636
+        img_width = 1000
+        gutters = 40
+
+        px_line_height = int(font_size * line_height)
+        num_lines = int((img_width - (gutters * 2)) / px_line_height)
+
+
+        # 100 - ((  80 ) / )
+        
+
+        right_edge = img_width - gutters
+
+        print num_lines
+
+
+        color_background = Color('#445154')
+        color_text = Color('#efece3')
+        color_useranswer = Color('#D7605C')
+
         with Image(filename=self.foreground_template) as original:
             with original.convert('png') as album_details:
                 with Drawing() as draw:
                     with Color('white') as bg:
-                        with Image(width=500, height=500, background=bg) as image:
-                            
-                            draw.font = 'static/fonts/league_gothic.otf'
-                            draw.font_size = 40
-                            counter = 40
+                        with Image(width=img_width, height=img_width, background=color_background) as image:
+                            with album_details.clone() as lowres_foreground:
 
-                            _text = ". ".join(all_answers)
+                                # lowres_foreground.resize()
 
-                            lines = textwrap.wrap(_text, 45)
 
-                            for a in lines:
-                                if counter < 440:
-                                    draw.text(0, counter, a)
-                                    counter = counter+40
-                            
-                            draw(image)
-                            image.composite(album_details, left=0, top=0)
+                                draw.fill_color = color_text
 
-                            image.save(filename=image_path)
+                                draw.font = 'static/fonts/georgia.ttf'
+                                draw.font_size = font_size
+
+                                # _text = " / ".join(all_answers)
+
+                                # lines = textwrap.wrap(_text, 45)
+
+                                line_counter = 1
+                                current_x = 0
+
+                                for idx, answer in enumerate(all_answers):
+                                    _text = "%s / " % (answer)
+
+                                    if idx == user_answer_pos:
+                                        draw.fill_color = color_useranswer
+                                    else:
+                                        draw.fill_color = color_text
+
+                                    for char in _text.split(" "):
+
+                                        if char and char != "":
+
+                                            word = "%s " % (char)
+
+
+                                            metrics = draw.get_font_metrics(image, word, multiline=False) 
+                                            # char_width = int(metrics.y1 + metrics.y2)
+                                            char_width = int(metrics.text_width)
+                                            # print metrics
+
+
+                                            if  current_x < right_edge - char_width - gutters:
+                                                draw.text(gutters + (current_x), gutters + (px_line_height * line_counter), word)
+                                                current_x += char_width
+
+                                            else:
+                                                if line_counter < num_lines:
+                                                    line_counter += 1
+                                                    current_x = 0
+                                                    draw.text(gutters + (current_x), gutters + (px_line_height * line_counter), word)
+                                                    current_x += char_width
+
+                                    
+
+
+                                    
+
+                                        # print draw.get_font_metrics(image, char, multiline=False)    
+
+
+
+                                        # draw.text(gutters, gutters + (px_line_height * line_counter), char)
+                                        # line_counter = line_counter+1
+                                
+                                draw(image)
+                                image.composite(album_details, left=0, top=0)
+
+                                image.save(filename=image_path)
 
         with Image(filename=image_path) as large:
             with large.clone() as thumb:
