@@ -241,7 +241,7 @@ class AlbumArtwork(object):
         total_center = int(total_answers/2)
 
         # anywhere in the middle of the pack.
-        user_answer_pos = randint(total_center - int(total_answers/4), total_center + int(total_answers/4))
+        user_answer_pos = randint(total_center - int(total_answers/4), total_center + int(total_answers/8))
 
         if user_answer_pos < 0:
             user_answer_pos = 0
@@ -257,13 +257,13 @@ class AlbumArtwork(object):
         thumbnail_path = self.thumbnail_path
         
         # num_lines = 28
-        font_size = 22
-        line_height = 1.636363636
+        font_size = 20
+        line_height = 1.8
         img_width = 1000
         gutters = 40
 
         px_line_height = int(font_size * line_height)
-        num_lines = int((img_width - (gutters * 2)) / px_line_height)
+        num_lines = int((img_width - (30)) / px_line_height)
 
 
         # 100 - ((  80 ) / )
@@ -278,12 +278,119 @@ class AlbumArtwork(object):
         color_text = Color('#efece3')
         color_useranswer = Color('#D7605C')
 
+
+        # Hard code the wrapping, can't find a library to handle it for now.
+        # Sigh. Here goes! 
+        text_wraps = [
+            [],
+            [
+                [530, 572]
+            ],
+            [
+                [509, 572]
+            ],
+            [
+                [215, 254],
+                [383, 819]
+            ],
+            [
+                [215, 540],
+                [587, 755]
+            ],
+            [
+                [156, 720]
+            ],
+            [
+                [77, 136],
+                [215, 708]
+            ],
+            [
+                [54, 136],
+                [215, 562],
+                [680, 708]
+            ],
+            [
+                [47, 522]
+            ],
+            [
+                [58, 140],
+                [409, 540]
+            ],
+            [
+                [266, 337],
+                [385, 552]
+            ],
+            [
+                [254, 325],
+                [475, 552],
+                [720, 790]
+            ],
+            [
+                [254, 332],
+                [472, 816]
+            ],
+            [
+                [254, 334],
+                [469, 827]
+            ],
+            [
+                [254, 341],
+                [462, 522],
+                [561, 630],
+                [728, 807]
+            ],
+            [
+                [266, 345],
+                [457, 522],
+                [552, 618],
+                [695, 790]
+            ],
+            [
+                [270, 354],
+                [452, 777]
+            ],
+            [
+                [286, 368],
+                [445, 729]
+            ],
+            [
+                [296, 666]
+            ],
+            [
+                [320, 445],
+                [500, 581]
+            ],
+            [
+                [487, 581]
+            ],
+            [
+                [468, 552]
+            ],
+            [
+                [455, 540]
+            ],
+            [
+                [435, 509]
+            ],
+            [
+                [425, 509]
+            ],
+            [
+                [409, 476]
+            ],
+            [
+                [388, 445]
+            ]
+
+        ]
+
+
         with Image(filename=self.foreground_template) as original:
             with original.convert('png') as album_details:
                 with Drawing() as draw:
                     with Color('white') as bg:
                         with Image(width=img_width, height=img_width, background=color_background) as image:
-                            with album_details.clone() as lowres_foreground:
+                            with Image(filename="static/images/placeholder-noise.png") as noise:
 
                                 # lowres_foreground.resize()
 
@@ -314,22 +421,30 @@ class AlbumArtwork(object):
 
                                             word = "%s " % (char)
 
+                                            wrap_line = text_wraps[line_counter-1]
 
                                             metrics = draw.get_font_metrics(image, word, multiline=False) 
                                             # char_width = int(metrics.y1 + metrics.y2)
                                             char_width = int(metrics.text_width)
                                             # print metrics
-
+                                            for wrap in wrap_line:
+                                                # print wrap
+                                                if current_x + char_width > wrap[0] - 5:
+                                                    if current_x + char_width < wrap[1] + 15:
+                                                        current_x = wrap[1] + 15
+                                                        print current_x
 
                                             if  current_x < right_edge - char_width - gutters:
-                                                draw.text(gutters + (current_x), gutters + (px_line_height * line_counter), word)
+
+
+                                                draw.text(gutters + (current_x), 15 + (px_line_height * line_counter), word)
                                                 current_x += char_width
 
                                             else:
                                                 if line_counter < num_lines:
                                                     line_counter += 1
                                                     current_x = 0
-                                                    draw.text(gutters + (current_x), gutters + (px_line_height * line_counter), word)
+                                                    draw.text(gutters + (current_x), 15 + (px_line_height * line_counter), word)
                                                     current_x += char_width
 
                                     
@@ -345,7 +460,8 @@ class AlbumArtwork(object):
                                         # line_counter = line_counter+1
                                 
                                 draw(image)
-                                image.composite(album_details, left=0, top=0)
+                                image.composite(noise, left=0, top=0)
+                                image.composite(album_details, left=0, top=int(gutters/1.5))
 
                                 image.save(filename=image_path)
 
