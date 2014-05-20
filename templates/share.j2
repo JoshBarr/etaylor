@@ -2,7 +2,9 @@
 {% import "macros.j2" as macros %}
 
 {% block meta %}
-	<meta http-equiv="refresh" content="15; url=/download/{{artwork_id}}">
+	<noscript>
+		<meta http-equiv="refresh" content="6; url=/download/{{artwork_id}}" id='meta_refresh'>
+	</noscript>
 {% endblock %}
 
 {% block content %}

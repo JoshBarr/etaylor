@@ -1,14 +1,14 @@
-<div data-state="question" id="question" class='block block--fullscreen' data-stretchy-block>
+<div data-state="question" class='block block--fullscreen' data-stretchy-block>
     <div class='block__background block__background-2'></div>
-    <div class='block--dark album-line-length block--center'>
-        <h2 class=''>
+    <div class='block--dark album-line-length block--center' data-step="question">
+        <h2 class='keyline--bottom'>
             <span class='question__q'>Q:</span> {{ question.title }}
         </h2>
 
-        <form method="post" action="/question">
+        <form method="post" action="/question" data-question-form>
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
             
-            {{ form.question(placeholder="A:", maxlength="85", class="question__answer")|safe }}
+            {{ form.question(placeholder="A:", maxlength="255", class="question__answer")|safe }}
 
             {% if form.question.errors %}
                 <ul class="errors list-unstyled form__errors">
@@ -17,12 +17,13 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-            <p>
-
-            <button type="submit" class='btn btn-primary small btn-block--q-small'>
-                Get the album
-            </button> 
-            </p> 
+            
+            <div class="action-block">
+                    <button type="submit" class='btn btn-primary btn--main' data-submit>
+                        Get the album
+                    </button> 
+            </div>
+            
         </form>
 
     </div>

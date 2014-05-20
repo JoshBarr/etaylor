@@ -271,11 +271,11 @@ class AlbumArtwork(object):
 
         right_edge = img_width - gutters
 
-        print num_lines
+        # print num_lines
 
 
-        color_background = Color('#445154')
-        color_text = Color('#efece3')
+        color_background = Color('#222')
+        color_text = Color('#999')
         color_useranswer = Color('#D7605C')
 
 
@@ -460,7 +460,7 @@ class AlbumArtwork(object):
                                         # line_counter = line_counter+1
                                 
                                 draw(image)
-                                image.composite(noise, left=0, top=0)
+                                # image.composite(noise, left=0, top=0)
                                 image.composite(album_details, left=0, top=int(gutters/1.5))
 
                                 image.save(filename=image_path)

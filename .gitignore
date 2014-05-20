@@ -5,3 +5,7 @@ bower_components
 static/tracks/*
 var/download/*
 dist.platforms/
+build/
+static/test.html
+static/wrap.svg
+test.py

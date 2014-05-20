@@ -18,30 +18,29 @@
 {% endblock %}
 
 
-
-
-
-<div class="site-nav">
-	<div class="block--center block text--center site-nav__container">
-		<a {% if request.path != "/" %} href="/"{% endif %} class='site-nav__item  {% if request.path == "/" %}site-nav__item--current{% endif %}'>Home</a>
+<div class="site-nav site-nav__container" data-ui-nav>
+	<div class="block--center block text--center ">
+		
 		
 		{% if session['download'] %}
 			<a {% if not request.path.startswith("/download") %} href="{{ session['download'] }}" {% endif %} class='site-nav__item  {% if request.path.startswith("/download") %}site-nav__item--current{% endif %}'>Download</a>
+		{% else %}
+			<a {% if request.path != "/" %} href="/"{% endif %} class='site-nav__item  {% if request.path == "/" %}site-nav__item--current{% endif %}'>Download</a>
 		{% endif %}
 
-		{% if request.path.startswith("/share") %}
+		{#% if request.path.startswith("/share") %}
 			<a class='site-nav__item  site-nav__item--current'>Working...</a>
 
-		{% endif %}
+		{% endif %#}
 
-		<a {% if request.path != "/credits" %} href="/credits" {% endif %} class='site-nav__item {% if request.path == "/credits" %}site-nav__item--current{% endif %}''>Credits</a>
+		<a {% if request.path != "/credits" %} href="/credits" {% endif %} class='site-nav__item {% if request.path == "/credits" %}site-nav__item--current{% endif %}'>Credits</a>
 	</div>
 </div>
 
 
 
 {% if not hide_brush %}
-<div class="brush"></div>
+<div class="brush" data-ui-brush></div>
 {% endif %}
 
 
@@ -49,7 +48,6 @@
 <script type="text/javascript">
 	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
 </script>
-<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='js/site.js') }}"></script>
 {% endblock %}
 

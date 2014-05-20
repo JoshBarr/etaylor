@@ -15,9 +15,9 @@
         </div>
     </div>
 </div>
-<div class='block block--fullscreen block--album   block--dark  no-zip-hide'>
+<div class='block block--fullscreen block--album   block--dark  no-zip-hide' data-download-zip>
     <div class="text--center">
-        <a href='/{{ album.zip }}' class='btn btn-primary btn-block--q-small ' data-download-btn>
+        <a href='/{{ album.zip }}' class='btn btn-secondary btn-block--q-small ' data-download-btn>
             Download <span class='tiny uppercase fileinfo'>Zip, 42.1MB</span>
         </a>
         <p class='small antialiased'>
@@ -25,7 +25,7 @@
         </p>
     </div>
 </div>
-<div class='block block--dark block--album  no-zip-show'>
+<div class='block block--dark block--album  no-zip-show' data-download-nozip>
     <div class='nice-line-length   text--center block--center'>
         <form action="/download/{{uid}}" method="post">
             <h2>Looks like your device can't download ZIP files.</h2>
@@ -37,7 +37,7 @@
                     <div class="form__field">
                         {{ field(placeholder='your@email.com')|safe }}
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block--q-xsmall form__submit">
+                    <button type="submit" class="btn btn-secondary btn-block--q-xsmall form__submit">
                         Email me
                     </button> 
                     {% if field.errors %}
