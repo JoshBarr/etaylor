@@ -3,33 +3,35 @@ var ElaborateProgressBar = function(el, options) {
     this.steps = [
         {
             "label": "Briefing the designer...",
-            "icon": "pencil"
+            "icon": "icon-designer"
         },
         {
             "label": "Opening editor...",
-            "icon": "pencil"
+            "icon": "icon-editor"
         },
         {
             "label": "Sending art to the printer...",
-            "icon": "pencil"
+            "icon": "icon-courier-bike"
         },
         {
             "label": "Printing art...",
-            "icon": "pencil"
+            "icon": "icon-printer"
         },
         {
             "label": "Trimming and assembling...",
-            "icon": "pencil"
+            "icon": "icon-scissors"
         },
         {
             "label": "Ringing courier...",
-            "icon": "pencil"
+            "icon": "icon-courier"
         },
         {
             "label": "Knock, knock...",
-            "icon": "pencil"
+            "icon": "icon-door"
         }
     ];
+
+    this.step = 0;
 
     this.stepDuration = 2200;
     this.totalDuration = this.steps.length * this.stepDuration;
@@ -55,9 +57,17 @@ ElaborateProgressBar.prototype = {
         });
 
         var elem = document.createElement("span");
+        var elemIcon = document.createElement("span");
         this.$textEl = $(elem);
-        this.nextStep();
-        $title.html(this.$textEl);
+        this.$iconEl = $(elemIcon);
+        
+        $title.html("");
+        $title
+            .append(this.$textEl)
+            .append(this.$iconEl);
+
+        this.changeMessage();
+
 
         $prog.velocity({ 
             top: [0, "100%"]
@@ -74,45 +84,99 @@ ElaborateProgressBar.prototype = {
             mobileHA: true
         });
 
-    },
-    nextStep: function() {
-        var step;
-        if (!this.step) {
-            this.step = 0;
-        }
-        step = this.steps[this.step];
+        var $brush = $("[data-ui-brush]");
 
-        if (!step) {
-            return false;
-        }
+        $brush.css({"z-index": 0});
 
-        this.$textEl.delay(this.stepDuration * .75).velocity({
-            opacity: 0,
-            top: "-20px"
-        }, {
-            easing: "easeInOutQuint",
-            duration: this.stepDuration / 8,
-            complete: $.proxy(this.changeMessage, this, step)
-        });
+        setTimeout($.proxy(function() {
+            $brush.velocity({
+                opacity: 0
+            }, {
+                duration: this.totalDuration*.25
+            });
+        }, this), this.totalDuration*.75);
 
-        this.$textEl.velocity({
-            opacity: 1,
-            top: ["0px", "40px"]
-        }, {
-            easing: "easeInOutQuint",
-            duration: this.stepDuration / 8,
-            complete: $.proxy(this.nextStep, this)
-        });
-
-        this.step++;
+        $prog.css({"z-index": 1});
+    
     },
 
-    changeMessage: function(step) {
-        this.$textEl.html(step.label);
+    showStep: function() {
+        this.$textEl
+            .velocity({
+                opacity: 1,
+                top: ["0px", "40px"]
+            }, {
+                easing: "easeInOutQuad",
+                duration: this.stepDuration * .125,
+                // complete: $.proxy(this.nextStep, this)
+            });
+        this.$iconEl
+            .velocity({
+                opacity: [1,0],
+                top: ["0px", "100px"]
+            }, {
+                duration: this.stepDuration * .125,
+                easing: "easeInOutQuad",
+            })
+    },
+
+    hideStep: function() {
+        this.$textEl
+            .delay(this.stepDuration * .75)
+            .velocity({
+                opacity: 0,
+                top: "-20px"
+            }, {
+                easing: "easeInOutQuad",
+                duration: this.stepDuration * .125,
+                complete: $.proxy(this.changeMessage, this)
+            });
+
+        this.$iconEl
+            .delay(this.stepDuration * .75)
+            .velocity({
+                opacity: [0,1],
+                top: ["-100px", "0px"]
+            }, {
+                duration: this.stepDuration * .125,
+                easing: "easeInOutQuad",
+            });
+    },
+
+
+    changeMessage: function() {
+        var html;
+        var stepObj = this.steps[this.step];
+        var lastStepNum = this.steps.length;
+
+        if (!stepObj) {
+            return;
+        }
+
+        html = "<span class='i icon-medium " +  stepObj.icon + "'></span>";
+       
+        this.$textEl.html(stepObj.label);
+        this.$iconEl.html(html);
+
+        if (this.step > lastStepNum) {
+            return;
+        }
+
+        if (this.step === 0) {
+            this.step++;
+        } else {
+            this.step++;
+            this.showStep(); 
+        }
+
+        if (this.step === lastStepNum) {
+            return;
+        }
+
+        this.hideStep();
     },
     
     animationComplete: function(el) {
-        // console.log(el);
         var duration = 600;
         this.$containerEl.delay(duration).velocity({
             opacity: [0, 1]
@@ -120,7 +184,7 @@ ElaborateProgressBar.prototype = {
             duration: duration,
             easing: "easeOutQuad",
             complete: $.proxy(this.navigate, this)
-        })
+        });
     },
     navigate: function() {
         window.location = this.el.dataset.elaborateProgressBar;

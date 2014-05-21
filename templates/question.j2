@@ -2,5 +2,36 @@
 {% import "macros.j2" as macros %}
 
 {% block content %}
-	{% include "step-2.j2" with context %}
+	<div data-state="question" class='block block--fullscreen' data-stretchy-block>
+	    <div class='block--dark album-line-length block--center text--center' data-step="question">
+	        
+
+	        <h4 class='split-line'>Q&amp;A</h4>
+	        <h3 class='question__text' data-question-text>
+	            {{ question.title }}
+	        </h3>
+
+	        <form method="post" action="/question" data-question-form>
+	            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+	            
+	            {{ form.question(placeholder="Your answer...", maxlength="255", class="question__answer")|safe }}
+
+	            {% if form.question.errors %}
+	                <ul class="errors list-unstyled form__errors">
+	                    {% for error in form.question.errors %}
+	                        <li>{{ error }}</li>
+	                    {% endfor %}
+	                </ul>
+	            {% endif %}
+	            
+	            <div class="action-block">
+	                <button type="submit" class='btn btn-primary btn--main' data-submit>
+	                    Get the album
+	                </button> 
+	            </div>
+	            
+	        </form>
+
+	    </div>
+	</div>
 {% endblock %}

@@ -17,7 +17,9 @@ var windowsPhone = (window.navigator.userAgent.match(/Windows Phone/) ? true : f
 
 module.exports = {
 	$doc: $(document),
+	$body: $("body"),
 	$html: $(document.documentElement),
+	$stage: $("[data-stage]"),
 	csrftoken: $('meta[name=csrf-token]').attr('content'),
 
 	ua: window.navigator.userAgent,

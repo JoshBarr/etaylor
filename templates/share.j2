@@ -1,20 +1,52 @@
 {% extends "template.j2" %}
 {% import "macros.j2" as macros %}
 
+
 {% block meta %}
 	<noscript>
 		<meta http-equiv="refresh" content="6; url=/download/{{artwork_id}}" id='meta_refresh'>
 	</noscript>
 {% endblock %}
 
+
+{% block loader %}
+<div class="progress-track" data-progress-track>
+    <div class="progress-bar" data-progress-bar></div>
+</div>
+{% endblock %}
+
 {% block content %}
-	{% include "step-3.j2" with context %}
+	<div id='working' class='block block--first block--fullscreen' data-step="share">
+    <div class='block__background block__background-3'></div>
+    
+
+    <div class='block--center block--dark album-line-length text--center' data-container>
+
+        <div data-elaborate-progress-bar="/download/{{artwork_id}}" class="">
+            <h4 class="split-line">working</h4>
+            <h1 class='working' data-progress-title>
+                &nbsp;
+                <noscript>
+                    Making the album artwork...
+                </noscript>
+            </h1>
+        </div>
+        
+        <div class=' m'>
+	        <h3>While you wait, share it.</h3>
+
+            <span class='st_facebook_hcount' st_url="http://thisisetaylor.com" st_title="{{ question.hashtag }} {{answer.text|safe}}" st_image="" st_summary="" displayText='Facebook'></span>
+            <span class='st_twitter_hcount' st_via="thisisetaylor" st_url="http://shar.es/U1xuU" st_title="{{ question.hashtag }} {{answer.text|safe}}"   displayText='Tweet'></span> 
+        </div>
+        
+    </div>
+</div>
 {% endblock %}
 
 
 {% block scripts %}
     {{ super() }}
 
-    <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-    <script type="text/javascript">stLight.options({publisher: "56318495-bb29-4bc3-afb5-92c9382816e4", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+    {#<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+    <script type="text/javascript">stLight.options({publisher: "56318495-bb29-4bc3-afb5-92c9382816e4", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>#}
 {% endblock %}

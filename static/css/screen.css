@@ -1,24 +1,59 @@
-html {
+.stage {
   background: #202020 url(../images/noise.png); }
 
+html {
+  height: 100%; }
 
 .view--album {
   background: #4148FF; }
-  .view--album body {
+  .view--album .stage {
     background: #4148FF; }
 
 body {
+  height: 100%;
+  position: relative;
   margin: 0;
   padding: 0;
   color: #111;
   font-family: sans-serif;
   line-height: 1.5; }
 
-h1, h2, h3, h4, h5, h6, p, ul, ol {
+h1, h3, h4, p, h2, .question__answer, .intro, .btn-primary {
+  -webkit-font-smoothing: antialiased; }
+
+h2, h3, h4, h5, h6, ul, ol {
   margin-bottom: 0; }
 
-.antialiased, h2, .question__answer, .intro, .btn-primary {
-  -webkit-font-smoothing: antialiased; }
+h1 {
+  font-weight: normal;
+  font-size: 1.875rem;
+  line-height: 1.3;
+  margin-bottom: 1em; }
+
+h3 {
+  font-weight: normal;
+  font-size: 18px; }
+
+h4 {
+  font-size: 15px;
+  font-style: italic;
+  font-weight: normal;
+  letter-spacing: 0.05em;
+  font-family: georgia, serif; }
+
+p + h4 {
+  margin-top: 3em; }
+
+p {
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  max-width: 28em;
+  margin-left: auto;
+  margin-right: auto; }
+
+p:first-child {
+  margin-top: 0; }
+
 
 h2, .question__answer, .intro {
   font-size: 1.5em;
@@ -29,14 +64,23 @@ h2, .question__answer, .intro {
       font-size: 1.2em;
       line-height: 1.5; } }
 
-.small {
-  font-size: 0.875em; }
+.font-serif {
+  font-family: georgia, serif; }
 
-.tiny {
-  font-size: 0.75em; }
+.split-line:before, .split-line:after {
+  content: " ";
+  width: 20%;
+  vertical-align: middle;
+  display: inline-block;
+  height: 1px;
+  background: #777; }
+.split-line:before {
+  margin-right: 0.75em; }
+.split-line:after {
+  margin-left: 0.75em; }
 
-.uppercase {
-  text-transform: uppercase; }
+.stage {
+  min-height: 100%; }
 
 .fileinfo {
   display: inline-block; }
@@ -44,9 +88,6 @@ h2, .question__answer, .intro {
 .block {
   padding: 1.5em 2em;
   overflow: hidden; }
-
-.block--s {
-  padding: 0.75em 1em; }
 
 .block--dark {
   color: #fff; }
@@ -64,17 +105,40 @@ h2, .question__answer, .intro {
   height: 130px;
   background-color: transparent;
   color: #fff;
-  font-size: 32px; }
-
-.keyline--bottom {
-  border-bottom: dashed 1px #333;
-  padding-bottom: 0.5em; }
+  font-size: 32px;
+  text-align: center; }
 
 .question__answer:focus {
   outline: none; }
 
+.question__text {
+  -webkit-transition: 1s ease-out;
+  -ms-transition: 1s ease-out;
+  -moz-transition: 1s ease-out;
+  -o-transition: 1s ease-out;
+  transition: 1s ease-out; }
+
+.question__text--disabled {
+  opacity: 0.5; }
+
 .question__errors {
-  color: #4C94FF; }
+  color: #4C94FF;
+  border: dotted 1px;
+  padding: 0.25em 0.5em;
+  display: inline-block;
+  position: relative;
+  margin-top: 0.5em; }
+  .question__errors:before {
+    content: "";
+    position: absolute;
+    display: block;
+    bottom: 100%;
+    border-width: 0.35em;
+    border-style: solid;
+    border-color: transparent;
+    border-bottom-color: inherit;
+    left: 50%;
+    margin-left: -0.35em; }
 
 button {
   font-size: medium; }
@@ -144,6 +208,14 @@ button {
   vertical-align: middle;
   font-style: normal; }
 
+.i {
+  display: inline-block; }
+
+.icon-medium {
+  width: 4em;
+  height: 4em;
+  background-size: cover; }
+
 .btn-primary {
   border: solid 1px #999;
   color: #fff;
@@ -180,16 +252,31 @@ button {
     width: 100%; } }
 
 .btn--main {
-  font-size: 17px;
-  margin-top: 2em;
-  display: block;
+  font-size: 15px;
+  margin-top: 1em;
   text-align: center;
-  width: 100%;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -o-box-sizing: border-box;
   box-sizing: border-box; }
+  @media only screen and (max-width: 37.5em) {
+    .btn--main {
+      width: 100%; } }
+
+.btn--disabled {
+  opacity: 0.25;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  cursor: default;
+  -webkit-transition: opacity 0.5s ease-out;
+  -ms-transition: opacity 0.5s ease-out;
+  -moz-transition: opacity 0.5s ease-out;
+  -o-transition: opacity 0.5s ease-out;
+  transition: opacity 0.5s ease-out; }
 
 .brush {
   position: absolute;
@@ -199,7 +286,7 @@ button {
   background: url(../images/brush.png) 0 0 no-repeat;
   background-size: cover; }
 
-body > .block:first-child, .block--first {
+.stage > .block:first-child, .block--first {
   padding-top: 13%;
   position: relative;
   z-index: 2; }
@@ -435,6 +522,7 @@ body > .block:first-child, .block--first {
   animation: up 0.5s both 0s ease-in-out; }
 
 .action-block {
+  margin-top: 0.5em;
   -webkit-animation: upper 0.5s backwards 0.25s ease-in-out;
   -moz-animation: upper 0.5s backwards 0.25s ease-in-out;
   -ms-animation: upper 0.5s backwards 0.25s ease-in-out;
@@ -573,39 +661,20 @@ input:focus, textarea:focus {
 .brush {
   z-index: 1; }
 
-.site-nav {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  left: 0;
-  z-index: 3;
-  cursor: pointer;
-  min-height: 4.5em; }
-
-.site-nav__container {
-  opacity: 0; }
-  @media only screen and (max-width: 37.5em) {
-    .site-nav__container {
-      padding-top: 1em; } }
-  .site-nav__container > div {
+.social {
+  padding: 1em;
+  background: #fff;
+  display: inline-block;
+  position: relative;
+  min-width: 13.625em;
+  min-height: 4em;
+  color: #222; }
+  .social:before {
+    content: " ";
+    display: block;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0; }
-
-.site-nav__item {
-  color: #ddd;
-  text-decoration: none;
-  border-bottom: dashed 1px rgba(255, 255, 255, 0.2);
-  padding-bottom: 0.125em;
-  -webkit-transition: border-bottom-color 0.1s;
-  -ms-transition: border-bottom-color 0.1s;
-  -moz-transition: border-bottom-color 0.1s;
-  -o-transition: border-bottom-color 0.1s;
-  transition: border-bottom-color 0.1s; }
-  .site-nav__item + .site-nav__item {
-    margin-left: 1em; }
-  .site-nav__item:hover {
-    color: #fff;
-    border-bottom-color: #999; }
-
+    bottom: 100%;
+    margin-left: -0.5em;
+    left: 50%;
+    border: solid 0.5em transparent;
+    border-bottom-color: #fff; }

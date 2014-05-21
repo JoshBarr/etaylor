@@ -4,6 +4,7 @@
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-sass": "*",
-    "grunt-contrib-uglify": "*"
+    "grunt-contrib-uglify": "*",
+    "grunt-grunticon": "^1.2.4"
   }
 }

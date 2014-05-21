@@ -54,6 +54,18 @@ module.exports = function(grunt) {
           // transform: ['coffeeify']
         }
       }
+    },
+    grunticon: {
+      site: {
+          files: [{
+              expand: true,
+              cwd: 'static/images/svg/',
+              src: ['*.svg', '*.png'],
+              dest: "static/css/svg"
+          }],
+          options: {
+          }
+      }
     }
     
   });
@@ -64,11 +76,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-grunticon');
+
 
   // Default task(s).
   grunt.registerTask('default', ['uglify']);
 
 
   grunt.registerTask("js", ["browserify", "concat"]);
+  grunt.registerTask("icon", ["grunticon"]);
 
 };

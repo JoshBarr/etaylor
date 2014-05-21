@@ -5,8 +5,11 @@ var Site = (function(window, document, $) {
     var loading = require("./components/loading.js");
     var nav = require("./components/nav.js");
     var question = require("./components/question.js");
+    var album = require("./components/album.js");
+    var PageTransitions = require("./components/page-transitions.js");
 
     var $doc = config.$doc;
+    var $stage = config.$stage;
 
 
     // ----------------------------------------------------
@@ -20,11 +23,30 @@ var Site = (function(window, document, $) {
         init: function() {
             zip.init();
             nav.init();
-            
+            PageTransitions.init();
+
             var $step = $("[data-step]");
+
+            if ($step.data("step") === "start") {
+                PageTransitions.showBrush(0);
+            }
+
+            if ($step.data("step") === "credits") {
+                PageTransitions.showBrush(0);
+            }
 
             if ($step.data("step") === "question") {
                 question.init();
+                PageTransitions.showBrush(0);
+            }
+
+            if ($step.data("step") === "share") {
+                PageTransitions.showBrush(0);
+            }
+
+            if ($step.data("step") === "album") {
+                album.init();
+                PageTransitions.showBrush(500, 900);
             }
 
             return this;

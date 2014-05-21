@@ -2,5 +2,25 @@
 {% import "macros.j2" as macros %}
 
 {% block content %}
-	{% include "step-1.j2" with context %}
+<div class='block block--fullscreen' id='start' data-stretchy-block data-step="start">
+    <div class='block--dark '>
+        <div class="block--center album-line-length text--center">
+
+
+            <h4 class='split-line'>e-taylor</h4>
+            <h1>Download the new album <br><em class='font-serif'>Up</em> here for free.</h1>
+            
+            <p class=''> But first you need to answer a question. Why? Because the artwork is dynamic (that means it’s always changing) and it will include your answer, as well as some of those before you.</p>
+            
+            <p class=''>
+                Now you’re an artist too.
+            </p>
+            
+            <p class='action-block'>
+                <a class='btn  btn-primary btn--main' href='/question' data-animate-link>Alright, let's go <i class='i icon-arrow-next'></i></a>
+            </p>
+
+        </div>
+    </div>
+</div>
 {% endblock %}

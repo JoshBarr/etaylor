@@ -1,8 +1,16 @@
+{% set album = {} %}
 <!DOCTYPE html>
 <html class="{{ html_class }}">
 <head>
 	<meta charset="utf-8">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
+	<meta property="fb:app_id"          content="1234567890" /> 
+	<meta property="og:type"            content="article" /> 
+	<meta property="og:url"             content="http://e-taylor.com/" /> 
+	<meta property="og:title"           content="{{ album.title|default("") }}" /> 
+	<meta property="og:image"           content="{{ album.image|default("") }}" /> 
+	<meta property="cookbook:author"    content="http://samples.ogp.me/390580850990722" />
+
 	{% block meta %}
 	{% endblock %}
 	{% block css %}
@@ -10,15 +18,40 @@
     {% endblock %}
 	<title>E-taylor :: Up</title>
 
+	<script>
+	/* grunticon Stylesheet Loader | https://github.com/filamentgroup/grunticon | (c) 2012 Scott Jehl, Filament Group, Inc. | MIT license. */
+	window.grunticon=function(e){if(e&&3===e.length){var t=window,n=!(!t.document.createElementNS||!t.document.createElementNS("http://www.w3.org/2000/svg","svg").createSVGRect||!document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image","1.1")||window.opera&&-1===navigator.userAgent.indexOf("Chrome")),o=function(o){var r=t.document.createElement("link"),a=t.document.getElementsByTagName("script")[0];r.rel="stylesheet",r.href=e[o&&n?0:o?1:2],a.parentNode.insertBefore(r,a)},r=new t.Image;r.onerror=function(){o(!1)},r.onload=function(){o(1===r.width&&1===r.height)},r.src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="}};
+	
+	grunticon( [
+		"{{ url_for('static', filename='css/svg/icons.data.svg.css') }}",
+		"{{ url_for('static', filename='css/svg/icons.data.png.css') }}",
+		"{{ url_for('static', filename='css/svg/icons.fallback.css') }}"
+		]
+	);
+
+	</script>
+	<noscript><link href="icons.fallback.css" rel="stylesheet"></noscript>
+	<script type="text/javascript">
+	(function(){
+		var el = document.createElement("style");
+		el.innerHTML = ".js-ghost{opacity:0;-webkit-user-select: none; -moz-user-select: none; cursor: default;}";
+		document.querySelector('head').appendChild(el);
+	})();
+	</script>
 </head>
 <body>
 
-
-{% block content %}
+{% block loader %}
 {% endblock %}
 
+<div class="stage js-ghost" data-stage>
+	{% block content %}
+	{% endblock %}
+</div>
 
-<div class="site-nav site-nav__container" data-ui-nav>
+{% if not hide_brush %}
+
+{#<div class="site-nav site-nav__container" data-ui-nav>
 	<div class="block--center block text--center ">
 		
 		
@@ -33,14 +66,13 @@
 
 		{% endif %#}
 
-		<a {% if request.path != "/credits" %} href="/credits" {% endif %} class='site-nav__item {% if request.path == "/credits" %}site-nav__item--current{% endif %}'>Credits</a>
+		{#<a {% if request.path != "/credits" %} href="/credits" {% endif %} class='site-nav__item {% if request.path == "/credits" %}site-nav__item--current{% endif %}'>Credits</a>
 	</div>
-</div>
+</div>#}
 
 
 
-{% if not hide_brush %}
-<div class="brush" data-ui-brush></div>
+<div class="brush js-ghost" data-ui-brush></div>
 {% endif %}
 
 

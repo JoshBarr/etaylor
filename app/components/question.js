@@ -1,3 +1,7 @@
+var AnimateOut = require("./animate-out.js");
+var config = require("./config.js");
+
+
 if (!String.prototype.trim) {
  String.prototype.trim = function() {
   return this.replace(/^\s+|\s+$/g,'');
@@ -117,10 +121,13 @@ Field.prototype = {
         this.errors = errors;
         this.showErrors();
 
-        if (!errors.length) { 
+        if (!errors.length) {
+            this.$el.trigger("validation:success");
             return true;
         }
 
+        this.$el.trigger("validation:error");
+        
         // return true;
     },
 
@@ -165,16 +172,54 @@ Form.prototype = {
         this.el = document.querySelector("[data-question-form]");
         this.textarea = document.getElementById("question");
         this.$el = $(this.el);
-        this.$submit = $("[data-submit]");
+        var $submit = $("[data-submit]");
+        var $questionText = $("[data-question-text]");
+        this.$submit = $submit;
 
         this.$submit.on("click", $.proxy(this.handleSubmit, this));
 
         this.addField(new Field(this.textarea, {
             validation: [
-                new NotNull(4),
+                new NotNull(1),
                 new MaxLength(80)
             ]
         }));
+
+        var $el = $(this.textarea);
+        $el.trigger("click");
+        
+
+        $el.on("keyup change", function(e) {
+            var val = e.target.value;
+            if (!val.length) {
+                if ($questionText.hasClass('question__text--disabled')) {                
+                    $questionText.removeClass('question__text--disabled');
+                }
+            }
+        });
+
+        $el.on("validation:error", function() {
+            
+            if ($questionText.hasClass('question__text--disabled')) {                
+                $questionText.removeClass('question__text--disabled');
+            }
+
+            if (!$submit.hasClass('btn--disabled')) {
+                $submit.addClass('btn--disabled');
+            }
+        });
+
+        $el.on("validation:success", function() {
+            if (!$questionText.hasClass('question__text--disabled')) {                
+                $questionText.addClass('question__text--disabled');
+            }
+
+            if ($submit.hasClass('btn--disabled')) {
+                $submit.removeClass('btn--disabled');
+                
+            }
+        });
+
     },
     addField: function(field) {
         this.fields.push(field);
@@ -196,15 +241,27 @@ Form.prototype = {
             field.el.value = field.el.value.trim();
         }
 
-        console.log(errors);
 
         if (errors.length) {
             return false;
         }
 
-        return this.$el.trigger("submit");
+        new AnimateOut(config.$stage, {
+            opacity: 0,
+        }, {
+            duration: 300,
+            easing: "easeInQuad",
+            complete: $.proxy(this.animComplete, this)
+        });
+
+        // return this.$el.trigger("submit");
 
     },
+
+    animComplete: function() {
+        return this.$el.trigger("submit");
+    },
+
     handleSubmit: function(e) {
         e.preventDefault();
         e.stopPropagation();
