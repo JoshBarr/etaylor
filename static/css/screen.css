@@ -73,7 +73,8 @@ h2, .question__answer, .intro {
   vertical-align: middle;
   display: inline-block;
   height: 1px;
-  background: #777; }
+  background: #777;
+  background: rgba(255, 255, 255, 0.4); }
 .split-line:before {
   margin-right: 0.75em; }
 .split-line:after {
@@ -212,9 +213,13 @@ button {
   display: inline-block; }
 
 .icon-medium {
-  width: 4em;
-  height: 4em;
-  background-size: cover; }
+  margin-top: 1em;
+  width: 3.5em;
+  height: 3.5em;
+  background-size: cover;
+  background: #4148FF;
+  border-radius: 100em;
+  overflow: hidden; }
 
 .btn-primary {
   border: solid 1px #999;

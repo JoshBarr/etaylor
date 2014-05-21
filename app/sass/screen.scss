@@ -148,6 +148,7 @@ h2, .question__answer, .intro {
     display: inline-block;
     height: 1px;
     background: #777;
+    background: rgba(255,255,255,0.4);
   }
   &:before {
     margin-right:.75em;
@@ -340,9 +341,13 @@ button {
 }
 
 .icon-medium {
-  width: 4em;
-  height: 4em;
+  margin-top: 1em;
+  width: 3.5em;
+  height: 3.5em;
   background-size: cover;
+  background: $electric;
+  border-radius: 100em;
+  overflow: hidden;
 }
 
 

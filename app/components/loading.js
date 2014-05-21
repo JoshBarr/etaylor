@@ -68,36 +68,45 @@ ElaborateProgressBar.prototype = {
 
         this.changeMessage();
 
-
-        $prog.velocity({ 
-            top: [0, "100%"]
-        }, {
-            /* Velocity's default options: */
-            duration: this.totalDuration,
-            easing: "linear",
-            queue: "",
-            begin: null,
-            complete: $.proxy(this.animationComplete, this),
-            loop: false,
-            delay: false,
-            display: false,
-            mobileHA: true
-        });
+        var percentageStep = 100 / this.steps.length;
+        var wait = (this.stepDuration * .75);
+        var go = this.stepDuration * .25;
+        var last = this.steps.length - 1;
 
         var $brush = $("[data-ui-brush]");
-
         $brush.css({"z-index": 0});
-
-        setTimeout($.proxy(function() {
-            $brush.velocity({
-                opacity: 0
-            }, {
-                duration: this.totalDuration*.25
-            });
-        }, this), this.totalDuration*.75);
-
         $prog.css({"z-index": 1});
-    
+
+        for (var i = 0; i < this.steps.length; i++) {
+
+            var complete = false;
+
+            if (i === last) {
+                complete = $.proxy(this.animationComplete, this);
+            }
+
+            if (i === last - 1) {
+                complete = function() {
+                    $brush.velocity({
+                        opacity: 0
+                    }, {
+                        duration: go * 2
+                    });
+                }
+            }
+
+            $prog
+                .velocity({
+                    top: (100 - (percentageStep * (i + 1))) + "%"
+                }, {
+                    duration: go,
+                    easing: "spring",
+                    complete: complete
+                })
+                .delay(wait)
+        }
+
+            
     },
 
     showStep: function() {
