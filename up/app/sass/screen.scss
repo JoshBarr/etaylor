@@ -14,7 +14,7 @@ $electric: #4148FF;
 
 }
 
-@mixin vendor($name, $argument) {
+@mixin vendor($name, $argument...) {
     -webkit-#{$name}: #{$argument};
     -ms-#{$name}: #{$argument};
     -moz-#{$name}: #{$argument};
@@ -553,23 +553,64 @@ button.btn-block--q-xsmall {
 }
 
 
-
 .text--center {
     text-align: center;
 }
 
-.cd-art{
+.cd-art {
+    position: relative;
     @extend %m;
-    line-height: 0;
+    display: inline-block;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.cd-art:before {
+  display: block;
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.cd-art:before {
+  top: 100%;
+  background: $electric;
+  @include vendor(transition, top .2s ease-in-out, opacity .2s ease-in-out);
+}
+
+.cd-art:after {
+  @extend %antialiased;
+  top: 50%;
+  left: 50%;
+  margin-left: -5.5em;
+  margin-top: -2em;
+  position: absolute;
+  content: "Download (.zip | 42.1mb)";
+  opacity: 0;
+  @include vendor(transition, margin-top .15s ease-in-out .2s, opacity .15s ease-in-out .2s);
+  background: $electric;
+  color: #fff;
+  padding: .5em .75em;
+}
+
+.cd-art:hover:before {
+    opacity: .25;
+    top: 0;
+}
+.cd-art:hover:after {
+    opacity: 1;
+    margin-top: -1em;
 }
 
 
     .cd-image {
         width: 100%;
-        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        display: block;
     }
 
-    .cd-image,
+    .cd-art,
     .album-line-length {
         max-width: 31.25em;
     }

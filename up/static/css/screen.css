@@ -18,7 +18,7 @@ body {
   font-family: sans-serif;
   line-height: 1.5; }
 
-h1, h3, h4, p, h2, .question__answer, .intro, .btn-primary {
+h1, h3, h4, p, h2, .question__answer, .intro, .btn-primary, .cd-art:after {
   -webkit-font-smoothing: antialiased; }
 
 h2, h3, h4, h5, h6, ul, ol {
@@ -538,13 +538,58 @@ button {
   text-align: center; }
 
 .cd-art {
-  line-height: 0; }
+  position: relative;
+  display: inline-block;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); }
+
+.cd-art:before {
+  display: block;
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+
+.cd-art:before {
+  top: 100%;
+  background: #4148FF;
+  -webkit-transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  -ms-transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  -moz-transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  -o-transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out; }
+
+.cd-art:after {
+  top: 50%;
+  left: 50%;
+  margin-left: -5.5em;
+  margin-top: -2em;
+  position: absolute;
+  content: "Download (.zip | 42.1mb)";
+  opacity: 0;
+  -webkit-transition: margin-top 0.15s ease-in-out 0.2s, opacity 0.15s ease-in-out 0.2s;
+  -ms-transition: margin-top 0.15s ease-in-out 0.2s, opacity 0.15s ease-in-out 0.2s;
+  -moz-transition: margin-top 0.15s ease-in-out 0.2s, opacity 0.15s ease-in-out 0.2s;
+  -o-transition: margin-top 0.15s ease-in-out 0.2s, opacity 0.15s ease-in-out 0.2s;
+  transition: margin-top 0.15s ease-in-out 0.2s, opacity 0.15s ease-in-out 0.2s;
+  background: #4148FF;
+  color: #fff;
+  padding: 0.5em 0.75em; }
+
+.cd-art:hover:before {
+  opacity: 0.25;
+  top: 0; }
+
+.cd-art:hover:after {
+  opacity: 1;
+  margin-top: -1em; }
 
 .cd-image {
   width: 100%;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); }
+  display: block; }
 
-.cd-image, .album-line-length {
+.cd-art, .album-line-length {
   max-width: 31.25em; }
 
 .block--center {

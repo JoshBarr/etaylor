@@ -3,9 +3,7 @@
 
 {#% set hide_brush = true %#}
 {% set html_class = "view--album" %}
-
 {% set hide_brush = True %}
-
 
 {% if errors %}
 {% set html_class = "view--album no-zip" %}
@@ -20,28 +18,23 @@
             Artwork by you, and a bunch of other people
             <a class='link nowrap' href="/credits">Album credits</a>
         </p>
-        <div class='cd-art ' data-cover>
-            <div class='' style='' data-sticky-placeholder>
-                <a href="/{{ album.zip }}">
-                    <img src="/{{ album.full }}" class="cd-image" alt="">
-                </a>
-            </div>
-        </div>
+
+        <a href="/album/{{ uid }}" class='cd-art' data-download-album><img src="{{ album.full }}" class="cd-image" alt=""></a>
     </div>
     <div class='block block--fullscreen block--album   block--dark  no-zip-hide' data-download-zip>
         <div class="text--center">
-            <a href='/{{ album.zip }}' class='btn btn-secondary btn-block--q-small ' data-download-btn>
+            {#<a href='/album/{{ uid }}' class='btn btn-secondary btn-block--q-small ' data-download-btn>
                 Download <span class='tiny uppercase fileinfo'>Zip, 42.1MB</span>
-            </a>
+            </a>#}
             <p class='small antialiased'>
-                <a href="#" class='link' data-toggle-zip-status>Can't download this kind of file?</a>
+                <a href="#" class='link' data-toggle-zip-status>Can't download .zip files?</a>
             </p>
         </div>
     </div>
     <div class='block block--dark block--album  no-zip-show' data-download-nozip>
         <div class='nice-line-length   text--center block--center'>
             <form action="/download/{{uid}}" method="post">
-                <h2>Looks like your device can't download ZIP files.</h2>
+                <h2 id="cant-download-zip-files">Looks like your device can't download ZIP files.</h2>
                 <p class='antialiased'>We can email you a link to the album:</p>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 

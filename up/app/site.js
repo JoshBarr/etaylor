@@ -21,7 +21,7 @@ var Site = (function(window, document, $) {
 
     Site.prototype = {
         init: function() {
-            zip.init();
+           
             nav.init();
             PageTransitions.init();
 
@@ -45,7 +45,8 @@ var Site = (function(window, document, $) {
             }
 
             if ($step.data("step") === "album") {
-                album.init();
+                album.init(zip);
+                zip.init();
                 PageTransitions.showBrush(500, 900);
             }
 

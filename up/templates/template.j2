@@ -1,4 +1,6 @@
-{% set album = {} %}
+
+
+
 <!DOCTYPE html>
 <html class="{{ html_class }}">
 <head>
@@ -7,15 +9,22 @@
 	<meta property="fb:app_id"          content="1234567890" /> 
 	<meta property="og:type"            content="article" /> 
 	<meta property="og:url"             content="http://e-taylor.com/" /> 
+
+	{% if album %}
 	<meta property="og:title"           content="{{ album.title|default("") }}" /> 
 	<meta property="og:image"           content="{{ album.image|default("") }}" /> 
+	{% endif %}
+
 	<meta property="cookbook:author"    content="http://samples.ogp.me/390580850990722" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	{% block meta %}
 	{% endblock %}
 	{% block css %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/screen.css') }}">
     {% endblock %}
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
 	<title>E-taylor :: Up</title>
 
 	<script>
