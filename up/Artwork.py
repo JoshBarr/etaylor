@@ -20,6 +20,8 @@ from Album import Album
 
 import yaml
 import json
+import Image as PILImage
+
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
 path_textwrap_data = os.path.join(current_dir, 'data/text-wraps.json')
@@ -166,10 +168,21 @@ class AlbumArtwork(object):
 
                                 image.save(filename=image_path)
 
+                                im = PILImage.open(image_path)
+                                jpeg = image_path.replace(".png", ".jpg")
+                                if im.mode != "RGB":
+                                    im = im.convert("RGB")
+                                im.save(jpeg)
+
+
         with Image(filename=image_path) as large:
             with large.clone() as thumb:
                 thumb.resize(140, 140)
                 thumb.save(filename=thumbnail_path)
+            
+
+       
+
 
         # self.process_tracks(answer_id, answer, image_path, thumbnail_path, self.zip_file_path)
         return self.zip_file_path 
@@ -293,6 +306,7 @@ class AlbumArtwork(object):
             return {
                 "id": entry[0],
                 "full": strip_path(entry[1]),
+                "lowres": strip_path(entry[1]).replace(".png", ".jpg"),
                 "thumb": strip_path(entry[2]),
                 "zip": strip_path(entry[3])
             }
