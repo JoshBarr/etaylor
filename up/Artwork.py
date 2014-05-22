@@ -23,6 +23,7 @@ import json
 import Image as PILImage
 
 
+
 current_dir = os.path.dirname(os.path.realpath(__file__))
 path_textwrap_data = os.path.join(current_dir, 'data/text-wraps.json')
 

@@ -80,6 +80,9 @@ h2, .question__answer, .intro {
 .split-line:after {
   margin-left: 0.75em; }
 
+.relative {
+  position: relative; }
+
 .stage {
   min-height: 100%; }
 
@@ -578,7 +581,7 @@ button {
   padding: 0.5em 0.75em; }
 
 .cd-art:hover:before {
-  opacity: 0.25;
+  opacity: 0.1;
   top: 0; }
 
 .cd-art:hover:after {
@@ -591,6 +594,32 @@ button {
 
 .cd-art, .album-line-length {
   max-width: 31.25em; }
+
+.cd-downloading {
+  display: none;
+  background: #4148FF;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0; }
+  .cd-downloading h1 {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    opacity: 0; }
+  .cd-downloading h2 {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    text-align: center; }
+  .cd-downloading .icon {
+    margin-top: 0; }
+
 
 .block--center {
   margin-left: auto;

@@ -19,7 +19,16 @@
             <a class='link nowrap' href="/credits">Album credits</a>
         </p>
 
-        <a href="/album/{{ uid }}" class='cd-art' data-download-album><img src="{% if album.lowres %}{{ album.lowres }}{% else %}{{ album.full }}{% endif %}" class="cd-image" alt=""></a>
+        <div class='relative'>
+            <a href="/album/{{ uid }}" class='cd-art' data-download-album><img src="{% if album.lowres %}{{ album.lowres }}{% else %}{{ album.full }}{% endif %}" class="cd-image" alt=""></a>
+            <div class="cd-downloading">
+                <h1><span class="i icon icon-medium icon-download"></span></h1>
+                
+                <h2>
+                    Downloading...
+                </h2>
+            </div>
+        </div>
     </div>
     <div class='block block--fullscreen block--album   block--dark  no-zip-hide' data-download-zip>
         <div class="text--center">
@@ -52,6 +61,9 @@
                                     <li>{{ error }}</li>
                                 {% endfor %}
                             </ul>
+                            <script type="text/javascript">
+                                window.location.hash = "cant-download-zip-files";
+                            </script>
                         {% endif %}
                         
                     {% endwith %}

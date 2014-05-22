@@ -17,15 +17,13 @@ var ZipToggle = {
 			this.setNoZip();
 		}
 
+		if ($html.hasClass("no-zip")) {
+			this.setNoZip();
+		}
+
 		var noZipEl = $("[data-download-nozip]");
 		var zipEl = $("[data-download-zip]");
 		
-		// zipEl.velocity({
-		// 	opacity: 1
-		// }, {
-		// 	duration: 100
-		// });
-
 		this.$togglers = $(this.selector);
 		this.$togglers.click(function(e) {
 			e.preventDefault();

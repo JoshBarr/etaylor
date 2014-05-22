@@ -161,7 +161,9 @@ h2, .question__answer, .intro {
 
 
 
-
+.relative {
+  position: relative;
+}
 
 
 
@@ -596,7 +598,7 @@ button.btn-block--q-xsmall {
 }
 
 .cd-art:hover:before {
-    opacity: .25;
+    opacity: .1;
     top: 0;
 }
 .cd-art:hover:after {
@@ -614,6 +616,50 @@ button.btn-block--q-xsmall {
     .album-line-length {
         max-width: 31.25em;
     }
+
+
+.cd-downloading {
+  display: none;
+  background: $electric;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  // @include vendor(transition, opacity .15s ease-out);
+
+  h1 {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+  }
+
+  h2 {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .icon {
+    margin-top: 0;
+    // @include vendor(transition, opacity .2s ease-out, margin-top .2s ease-out);
+  }
+}
+
+
+.cd-downloading--active {
+  // opacity: 1;
+
+  // .icon {
+  //   margin-top: 1em;
+  // }
+}
 
 
 .block--center {
