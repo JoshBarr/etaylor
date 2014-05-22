@@ -13,12 +13,15 @@ module.exports = {
 		} else {
 			var $thing = $(".cd-downloading");
 			var $arrow = $thing.find("h1");
+			var $btn = this.$btn;
+
 			$thing.show();
 			$thing.addClass("cd-downloading--active");
+			$btn.css({opacity: 0});
 
 			$arrow.velocity({
 				opacity: [1, 0],
-				top: ["25%", "20%"]
+				top: ["22%", "18%"]
 			}, {
 				duration: 200,
 				delay: 50,
@@ -31,17 +34,21 @@ module.exports = {
 				},{
 					duration: 100
 				})
-				.delay(3000).velocity({
+				.delay(3000)
+				.velocity({
 					opacity: 0
 				}, {
-					duration: 300,
+					duration: 10,
+					begin: function() {
+						$btn.css({opacity: 1});
+					},
 					complete: function(){
 						$thing.removeClass("cd-downloading--active");
 						$thing.hide();
-						$arrow.css({top:"20%", opacity: 0});
+						$arrow.css({top:"18%", opacity: 0});
+
 					}
 				});
-			e.preventDefault();
 		}		
 	}
 };

@@ -81,7 +81,10 @@ h2, .question__answer, .intro {
   margin-left: 0.75em; }
 
 .relative {
-  position: relative; }
+  position: relative;
+  max-width: 31.25em;
+  margin-left: auto;
+  margin-right: auto; }
 
 .stage {
   min-height: 100%; }
@@ -543,7 +546,9 @@ button {
 .cd-art {
   position: relative;
   display: inline-block;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); }
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  padding-bottom: 100%; }
 
 .cd-art:before {
   display: block;
@@ -561,12 +566,13 @@ button {
   -ms-transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
   -moz-transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
   -o-transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
-  transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out; }
+  transition: top 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  z-index: 1; }
 
 .cd-art:after {
   top: 50%;
   left: 50%;
-  margin-left: -5.5em;
+  margin-left: -6em;
   margin-top: -2em;
   position: absolute;
   content: "Download (.zip | 42.1mb)";
@@ -578,7 +584,8 @@ button {
   transition: margin-top 0.15s ease-in-out 0.2s, opacity 0.15s ease-in-out 0.2s;
   background: #4148FF;
   color: #fff;
-  padding: 0.5em 0.75em; }
+  padding: 0.5em 0.75em;
+  z-index: 2; }
 
 .cd-art:hover:before {
   opacity: 0.1;
@@ -590,20 +597,24 @@ button {
 
 .cd-image {
   width: 100%;
-  display: block; }
+  display: block;
+  max-width: 100%;
+  height: auto;
+  position: absolute;
+  z-index: 0; }
 
 .cd-art, .album-line-length {
   max-width: 31.25em; }
 
 .cd-downloading {
   display: none;
-  background: #4148FF;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  opacity: 0; }
+  opacity: 0;
+  z-index: 3; }
   .cd-downloading h1 {
     position: absolute;
     top: 20%;
@@ -618,7 +629,8 @@ button {
     width: 100%;
     text-align: center; }
   .cd-downloading .icon {
-    margin-top: 0; }
+    margin-top: 0;
+    background-color: transparent; }
 
 
 .block--center {

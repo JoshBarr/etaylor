@@ -163,6 +163,9 @@ h2, .question__answer, .intro {
 
 .relative {
   position: relative;
+  max-width: 31.25em;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 
@@ -564,6 +567,8 @@ button.btn-block--q-xsmall {
     @extend %m;
     display: inline-block;
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    width: 100%;
+    padding-bottom: 100%;
 }
 
 .cd-art:before {
@@ -580,13 +585,14 @@ button.btn-block--q-xsmall {
   top: 100%;
   background: $electric;
   @include vendor(transition, top .2s ease-in-out, opacity .2s ease-in-out);
+  z-index: 1;
 }
 
 .cd-art:after {
   @extend %antialiased;
   top: 50%;
   left: 50%;
-  margin-left: -5.5em;
+  margin-left: -6em;
   margin-top: -2em;
   position: absolute;
   content: "Download (.zip | 42.1mb)";
@@ -595,6 +601,7 @@ button.btn-block--q-xsmall {
   background: $electric;
   color: #fff;
   padding: .5em .75em;
+  z-index: 2;
 }
 
 .cd-art:hover:before {
@@ -610,6 +617,10 @@ button.btn-block--q-xsmall {
     .cd-image {
         width: 100%;
         display: block;
+        max-width: 100%;
+        height: auto;
+        position: absolute;
+        z-index: 0;
     }
 
     .cd-art,
@@ -620,13 +631,14 @@ button.btn-block--q-xsmall {
 
 .cd-downloading {
   display: none;
-  background: $electric;
+  // background: $electric;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   opacity: 0;
+  z-index: 3;
   // @include vendor(transition, opacity .15s ease-out);
 
   h1 {
@@ -648,6 +660,7 @@ button.btn-block--q-xsmall {
 
   .icon {
     margin-top: 0;
+    background-color: transparent;
     // @include vendor(transition, opacity .2s ease-out, margin-top .2s ease-out);
   }
 }
