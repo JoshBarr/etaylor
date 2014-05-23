@@ -84,6 +84,10 @@ h1 {
   font-size: 1.875rem;
   line-height: 1.3;
   margin-bottom: 1em;
+  
+  @include media("xsmall")  {
+    font-size: 1.375em;
+  }
 }
 
 h3 {
@@ -217,12 +221,17 @@ h2, .question__answer, .intro {
     padding: 0;
     font-family: helvetica, sans-serif;
     width: 100%;
-    height: 130px;
+    height: 4em;
     background-color: transparent;
     color: #fff;
     font-size: 32px;
     text-align: center;
     @extend %mHalf;
+
+    @include media(xsmall) {
+      font-size: 1.375em;
+      // height: 100px;
+    }
 }
 
 
@@ -349,13 +358,26 @@ button {
   margin-top: 1em;
   width: 3.5em;
   height: 3.5em;
+
   background-size: cover;
   background: $electric;
   border-radius: 100em;
   overflow: hidden;
+  text-align: center;
+  @include media(xsmall) {
+    width: 4.5em;
+    height: 4.5em;
+  }
 }
 
-
+.icon-download {
+  
+  @include media(xsmall) {
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+  }
+}
 
 .btn-primary {
   border: solid 1px #999;
@@ -387,6 +409,7 @@ button {
     @include media('small') {
         display: block;
         text-align: center;
+
     }
 }
 
@@ -399,13 +422,15 @@ button {
 
 button.btn-block--q-small {
     @include media('small') {
+      margin-top: .5em;  
         width: 100%; // For buttons!
     }
 }
 
 button.btn-block--q-xsmall {
     @include media('xsmall') {
-        width: 100%; // For buttons!
+       margin-top: .5em;  
+      width: 100%; // For buttons!
     }
 }
 

@@ -8,8 +8,15 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: 'src/<%= pkg.name %>.js',
-        dest: 'build/<%= pkg.name %>.min.js'
+        src: 'static/js/site.js',
+        dest: 'static/js/site.js'
+      }
+    },
+    cssmin: {
+      combine: {
+        files: {
+          'static/css/screen.css': ['static/css/screen.css']
+        }
       }
     },
     concat: {
@@ -77,6 +84,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-grunticon');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
 
 
   // Default task(s).
@@ -85,5 +93,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask("js", ["browserify", "concat"]);
   grunt.registerTask("icon", ["grunticon"]);
+  grunt.registerTask("dist", ["uglify", "cssmin"]);
 
 };

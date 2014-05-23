@@ -10,7 +10,7 @@ var ElaborateProgressBar = function(el, options) {
             "icon": "icon-editor"
         },
         {
-            "label": "Sending art to the printer...",
+            "label": "Sending to printer...",
             "icon": "icon-courier-bike"
         },
         {
@@ -18,7 +18,7 @@ var ElaborateProgressBar = function(el, options) {
             "icon": "icon-printer"
         },
         {
-            "label": "Trimming and assembling...",
+            "label": "Cutting and folding...",
             "icon": "icon-scissors"
         },
         {
