@@ -16,9 +16,11 @@
         <h2>E Taylor <span class='nowrap'>- Up (Side A)</span></h2>
         <p class='antialiased small'>
             Artwork by you, and a bunch of other people
-            <a class='link nowrap' href="/credits">EP credits</a>
         </p>
 
+        <p>
+            <a class='link nowrap' href="/credits">EP credits</a>
+        </p>
         <div class='relative'>
             <a href="/ep/{{ uid }}" class='cd-art' data-download-album><img src="{% if album.lowres %}{{ album.lowres }}{% else %}{{ album.full }}{% endif %}" class="cd-image" alt=""></a>
             <div class="cd-downloading">
@@ -73,7 +75,7 @@
     </div>
     <div class='block block--fullscreen block--album   block--dark  no-zip-hide' data-download-zip>
         <div class="text--center small">
-            <a class='footer__link' href="http://www.facebook.com/thisisetaylor">
+            <a class='footer__link footer__link--twitter' href="http://www.facebook.com/thisisetaylor">
                 <i class='i i-footer icon-twitter'></i>
                 <span class='footer__text'>Twitter</span>
             </a>
