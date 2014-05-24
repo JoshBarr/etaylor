@@ -141,11 +141,11 @@ def preview(hash_id):
             
             if email_form.validate():
                 email_addy = email_form.email.data
-                email_body = render_template('email-plain.j2', album_id=hash_id)
-                email_html = render_template('email.j2', album_id=hash_id)
+                email_body = render_template('email-plain.j2', album_id=hash_id, email=email_addy)
+                email_html = render_template('email.j2', album_id=hash_id, email=email_addy)
                 send_email(
                     email_addy,
-                    "Album download from thisisetaylor.com",
+                    " EP & artwork download from thisisetaylor.com",
                     email_body,
                     email_html
                 )
@@ -161,7 +161,7 @@ def preview(hash_id):
 
 
 
-@app.route('/album/<hash_id>', methods=['GET'])
+@app.route('/ep/<hash_id>', methods=['GET'])
 def album(hash_id):
     """
     Flask is great. Serve up a file, then run an after-request

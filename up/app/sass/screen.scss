@@ -977,3 +977,35 @@ input[type="text"] {
     border-bottom-color: #fff;
   }
 }
+
+.i-footer {
+  width: 1em;
+  height: 1em;
+  background-size: cover;
+}
+
+.i-footer--long {
+  width: 2em;
+}
+
+
+.footer__link {
+  color: #fff;
+  text-decoration: none;
+  margin-right: .5em;
+  white-space: nowrap;
+  &:hover > span {
+    // color: #fff;
+    opacity: .95;
+    text-decoration: underline;
+  }
+}
+
+.footer__link--twitter {
+  margin-right: .75em;
+}
+
+.footer__text {
+  text-decoration: none;
+  font-size: .75em;
+}
