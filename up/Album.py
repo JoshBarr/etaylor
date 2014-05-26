@@ -3,7 +3,7 @@ class Album(object):
     A generic container for all the album stuff
     """
     question = 1
-    title = "Up: Side A"
+    title = "Up (Side A)"
     artist = "E Taylor"
     genre = "Rap"
     year = "2014"

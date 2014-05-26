@@ -256,11 +256,11 @@ class AlbumArtwork(object):
                 audiofile.tag.save(preserve_file_time=True, version=eyed3.id3.ID3_V2_4)
                 track_counter = track_counter + 1
             
-            self.zip(temp_dir, zip_output)
+            self.zip(temp_dir, zip_output, image_path)
 
         return zip_output
 
-    def zip(self, src, dst):
+    def zip(self, src, dst, image_path):
         zf = zipfile.ZipFile("%s" % (dst), "w")
         abs_src = os.path.abspath(src)
 
@@ -271,6 +271,9 @@ class AlbumArtwork(object):
                 print 'zipping %s as %s' % (os.path.join(dirname, filename),
                                             arcname)
                 zf.write(absname, arcname)
+
+        zf.write(image_path, "artwork.png")
+
         zf.close()
         # print "removing %s" % (src)
         shutil.rmtree(src)
