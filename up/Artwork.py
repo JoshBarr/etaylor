@@ -40,6 +40,8 @@ class AlbumArtwork(object):
     image_path = None
     thumbnail_path = None
     zip_file_path = None
+    # font = 'static/fonts/SourceSansPro-Regular.ttf'
+    font = 'static/fonts/georgia.ttf'
     
     def create(self, answer_id=None):
         self.answer_id = answer_id
@@ -89,7 +91,7 @@ class AlbumArtwork(object):
         right_edge = img_width - gutters
 
         color_background = Color('#222')
-        color_text = Color('#999')
+        color_text = Color('#666')
         color_useranswer = Color('#D7605C')
 
 
@@ -101,14 +103,14 @@ class AlbumArtwork(object):
                 with Drawing() as draw:
                     with Color('white') as bg:
                         with Image(width=img_width, height=img_width, background=color_background) as image:
-                            # with Image(filename="static/images/placeholder-noise.png") as noise:
+                            with Image(filename= os.path.join(current_dir, "static/images/placeholder-noise.png")) as noise:
 
                                 # lowres_foreground.resize()
 
 
                                 draw.fill_color = color_text
 
-                                draw.font = os.path.join(current_dir,'static/fonts/georgia.ttf')
+                                draw.font = os.path.join(current_dir,self.font)
                                 draw.font_size = font_size
 
                                 # _text = " / ".join(all_answers)
@@ -164,9 +166,10 @@ class AlbumArtwork(object):
                                         # line_counter = line_counter+1
                                 
                                 draw(image)
+                                
                                 # image.composite(noise, left=0, top=0)
-                                image.composite(album_details, left=0, top=int(gutters/1.5))
-
+                                image.composite(album_details, left=-10, top=int(gutters/1.5))
+                                
                                 image.save(filename=image_path)
 
                                 im = PILImage.open(image_path)
