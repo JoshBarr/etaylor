@@ -108,7 +108,7 @@ def share(hash_id):
     artwork = AlbumArtwork().create(answer_id)
     question = questions.get(album.question)
     answer = answers.get(answer_id)
-    random_answers = answers.get_random_answers()
+    random_answers = answers.get_random_answers(answer_id)
 
     session["download"] = None
 

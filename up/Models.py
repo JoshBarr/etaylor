@@ -24,9 +24,9 @@ class Answers(object):
     def __init__(self):
         return None
 
-    def get_random_answers(self):
+    def get_random_answers(self, not_this_id):
         db = get_db()
-        cur = db.execute('SELECT text, time, question_id from answers limit 150')
+        cur = db.execute('SELECT text, time, question_id from answers  where id not in (%s) limit 156' % (not_this_id))
         entries = cur.fetchall()
         shuffle(entries)
         return entries
