@@ -3,17 +3,34 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
-	<meta property="fb:app_id"          content="1234567890" /> 
-	<meta property="og:type"            content="article" /> 
-	<meta property="og:url"             content="http://e-taylor.com/" /> 
 
-	{% if album %}
-	<meta property="og:title"           content="{{ album.title|default("") }}" /> 
-	<meta property="og:image"           content="{{ album.image|default("") }}" /> 
-	{% endif %}
 
-	<meta property="cookbook:author"    content="http://samples.ogp.me/390580850990722" />
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	{% set social_headline = "Add your answer to E Taylor’s EP cover art, then download the rapper’s debut for free" %}
+	{% set social_description = "Free download: NZ rapper E Taylor’s debut EP ‘Up (Side A)’" %}
+	{% set social_image = url_for('static', filename = 'up-side-a-share.png', _external = True) %}
+	{% set social_url = url_for('main.start', _external = True) %}
+
+	<meta name="description" content="{{ social_headline }}">
+	<meta name="keywords" content="elliot taylor, e taylor, rap, music, new zealand hip-hop, free">
+	<meta rel="author" content="E Taylor">
+
+	<!-- for Facebook -->
+	<meta property="og:title" content="{{ social_headline }}" />
+	<meta property="og:type" content="article" />
+	<meta property="og:site_name" content="E Taylor" />
+	<meta property="og:url" content="{{ social_url }}" />	
+	<meta property="og:image" content="{{ social_image }}"/>	
+	<meta property="og:description" content="{{ social_description }}"/>
+
+	<!-- for Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="{{ social_headline }}" />
+	<meta name="twitter:description" content="{{ social_description }}" />
+	<meta name="twitter:image" content="{{ social_image }}" />
+	<meta name="twitter:creator" content="@thisisetaylor">
+	<meta name="twitter:url" content="{{ social_url }}">
+
+
 
 	{% block meta %}
 	{% endblock %}
