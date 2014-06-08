@@ -40,3 +40,6 @@ def create_app(settings_file):
     app.register_blueprint(main)
     
     return app
+
+
+app = create_app("settings.py")

@@ -4,6 +4,7 @@ up/node_modules
 up/bower_components
 up/static/tracks/*
 up/var/download/*
+up/var/up.sqlite
 up/dist.platforms/
 up/build/
 up/static/test.html
