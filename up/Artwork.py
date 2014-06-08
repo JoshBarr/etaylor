@@ -8,7 +8,7 @@ import zipfile
 import errno
 import os
 
-from Database import connect_db, get_db, close_db
+# from Database import connect_db, get_db, close_db
 from utils import mkdir_p
 from wand.image import Image
 from wand.display import display
@@ -17,11 +17,14 @@ from wand.color import Color
 from random import randint, shuffle
 
 from Album import Album
+from up.Models import db, Answers, Artwork
+
 
 import yaml
 import json
 import Image as PILImage
 
+from hashids import Hashids
 
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -40,24 +43,54 @@ class AlbumArtwork(object):
     image_path = None
     thumbnail_path = None
     zip_file_path = None
-    # font = 'static/fonts/SourceSansPro-Regular.ttf'
     font = 'static/fonts/georgia.ttf'
     
-    def create(self, answer_id=None):
+    def create(self, hash_id, answer, random_answers):
+
+        answer_id = answer.id
+        image_path = '%sartwork-%s-500x500.png' % (self.image_output_path, hash_id)
+        image_path_jpg = '%sartwork-%s-500x500.jpg' % (self.image_output_path, hash_id)
+        thumbnail_path = '%sartwork-%s-140x140.png' % (self.image_output_path, hash_id)
+        
+        output_dir = os.path.join(current_dir, "static/tracks/%s" % (hash_id))
+        zip_file_path = "%s/e-taylor-up-side-a.zip" % (output_dir)
+        
+        artwork = Artwork(
+                answer_id  = answer_id,
+                fullsize_url = image_path,
+                fullsize_jpg = image_path_jpg,
+                thumbnail_url = thumbnail_path, 
+                zip_file = zip_file_path
+            )
+
+        db.session.add(artwork)
+        db.session.commit()
+
         self.answer_id = answer_id
-        self.image_path = '%sartwork-%s-500x500.png' % (self.image_output_path, answer_id)
-        self.thumbnail_path = '%sartwork-%s-140x140.png' % (self.image_output_path, answer_id)
-        self.output_dir = os.path.join(current_dir, "static/tracks/%s" % (answer_id))
-        self.zip_file_path = "%s/e-taylor-up-side-a.zip" % (self.output_dir)
-        self.artwork_id = self.store(self.answer_id, self.image_path, self.thumbnail_path, self.zip_file_path)
+        self.image_path = image_path
+        self.image_path_jpg = image_path_jpg
+        self.thumbnail_path = thumbnail_path
+        self.output_dir = output_dir
+        self.zip_file_path = zip_file_path
+
+        self.model = artwork 
+        self.answer = answer
+
+        self.random_answers = random_answers
+
         return self
 
-    def render(self, answer, answer_id, random_answers):
+
+    def render(self):
 
         all_answers = []
+        
+        random_answers = self.random_answers
+        answer = self.answer.text
+
 
         for row in random_answers:
-            all_answers.append(row[0])
+            all_answers.append(row.text)
 
         shuffle(all_answers)
         total_answers = len(all_answers)
@@ -186,9 +219,6 @@ class AlbumArtwork(object):
             
 
        
-
-
-        # self.process_tracks(answer_id, answer, image_path, thumbnail_path, self.zip_file_path)
         return self.zip_file_path 
 
 
@@ -201,22 +231,21 @@ class AlbumArtwork(object):
 
         return song_output_filename
 
-    def process(self, answer_id):
+    def process(self, answer_id, hash_id):
         album_data = self.get(answer_id)
-
-        # print answer_id, album_data
 
         return self.process_tracks(
             answer_id,
-            os.path.join(current_dir, album_data['full']),
-            os.path.join(current_dir, album_data['thumb']),
-            os.path.join(current_dir, album_data['zip'])
+            hash_id,
+            os.path.join(current_dir, album_data.fullsize_url),
+            os.path.join(current_dir, album_data.thumbnail_url),
+            os.path.join(current_dir, album_data.zip_file)
         )
 
 
-    def process_tracks(self, answer_id, image_path, thumbnail_path, zip_output):
-        output_dir = "%s%s" % (self.track_output_path, answer_id)
-        temp_dir = "%s%s" % (self.track_temp_path, answer_id)
+    def process_tracks(self, answer_id, hash_id, image_path, thumbnail_path, zip_output):
+        output_dir = "%s%s" % (self.track_output_path, hash_id)
+        temp_dir = "%s%s" % (self.track_temp_path, hash_id)
         image_data = open(image_path, "rb").read()
         thumbnail_data = open(thumbnail_path, "rb").read()
 
@@ -238,14 +267,13 @@ class AlbumArtwork(object):
             track_counter = 1;
 
             for song in album.tracks:
-                song_output_filename = self.copy_track(song, answer_id)
+                song_output_filename = self.copy_track(song, hash_id)
 
                 audiofile = eyed3.load(song_output_filename)
                 # print audiofile.tag
                 # print song_output_filename
 
                 if not audiofile.tag:
-                    print eyed3.id3.FileInfo(song_output_filename)
                     audiofile.tag = eyed3.id3.Tag()
                     audiofile.tag.file_info = eyed3.id3.FileInfo(song_output_filename)
 
@@ -264,61 +292,40 @@ class AlbumArtwork(object):
         return zip_output
 
     def zip(self, src, dst, image_path):
-        zf = zipfile.ZipFile("%s" % (dst), "w")
-        abs_src = os.path.abspath(src)
+        with zipfile.ZipFile("%s" % (dst), "w") as zf:
+            abs_src = os.path.abspath(src)
 
-        for dirname, subdirs, files in os.walk(src):
-            for filename in files:
-                absname = os.path.abspath(os.path.join(dirname, filename))
-                arcname = absname[len(abs_src) + 1:]
-                print 'zipping %s as %s' % (os.path.join(dirname, filename),
-                                            arcname)
-                zf.write(absname, arcname)
+            for dirname, subdirs, files in os.walk(src):
+                for filename in files:
+                    absname = os.path.abspath(os.path.join(dirname, filename))
+                    arcname = absname[len(abs_src) + 1:]
+                    print 'zipping %s as %s' % (os.path.join(dirname, filename),
+                                                arcname)
+                    zf.write(absname, arcname)
 
-        zf.write(image_path, "artwork.png")
+            zf.write(image_path, "artwork.png")
+            zf.close()
+            shutil.rmtree(src)
 
-        zf.close()
-        # print "removing %s" % (src)
-        shutil.rmtree(src)
 
-    def store(self, answer_id, image_path, thumbnail_path, zip_file):
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute('INSERT or REPLACE into artwork (answer_id, fullsize_url, thumbnail_url, zip_file) values (?,?,?,?)',
-                 [answer_id, image_path, thumbnail_path, zip_file])
-        db.commit()
-        # print answer_id, image_path, thumbnail_path, zip_file, cursor.lastrowid
-        return cursor.lastrowid
-
-    def get(self, artwork_id=1):
-        db = get_db()
-        cur = db.execute('SELECT fullsize_url, thumbnail_url, zip_file from artwork where answer_id = %s' % (artwork_id))
-        entry = cur.fetchone()
-        try:
-            return {
-                "full": entry[0],
-                "thumb": entry[1],
-                "zip": entry[2]
-            }
-        except:
-            return None
+    def get(self, answer_id=1):
+        artwork = Artwork.query.filter_by(answer_id=answer_id).first()
+        return artwork
             
+
     def get_by_answer(self, answer_id=1):
+        artwork = Artwork.query.filter_by(answer_id=answer_id).first()
+        return artwork
 
-        db = get_db()
-        cur = db.execute('SELECT id, fullsize_url, thumbnail_url, zip_file from artwork where answer_id = %s' % (answer_id))
-        entry = cur.fetchone()
+    def __exit__(self, *err):
+        pass
 
-        try:
-            return {
-                "id": entry[0],
-                "full": strip_path(entry[1]),
-                "lowres": strip_path(entry[1]).replace(".png", ".jpg"),
-                "thumb": strip_path(entry[2]),
-                "zip": strip_path(entry[3])
-            }
-        except:
-            return None
+    def __enter__(self):
+        return self
+
+    # def __del__(self):
+    #     print "deling", self
+
 
 
 def strip_path(path):

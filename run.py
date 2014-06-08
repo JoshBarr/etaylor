@@ -1,2 +1,3 @@
-from up import app
-app.run(debug=True)
+from up import create_app
+app = create_app("settings.py")
+app.run()

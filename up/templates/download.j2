@@ -22,7 +22,7 @@
             <a class='link nowrap' href="/credits">EP credits</a>
         </p>
         <div class='relative'>
-            <a href="/ep/{{ uid }}" class='cd-art' data-download-album><img src="{% if album.lowres %}{{ album.lowres }}{% else %}{{ album.full }}{% endif %}" class="cd-image" alt=""></a>
+            <a href="/ep/{{ uid }}" class='cd-art' data-download-album><img src="{{ url_for('static', filename='artwork/%s' % (img) ) }}" class="cd-image" alt=""></a>
             <div class="cd-downloading">
                 <h1><span class="i icon icon-medium icon-download"></span></h1>
                 
