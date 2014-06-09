@@ -42,3 +42,6 @@ MAIL_PASSWORD = 'HarryConnick67'
 CACHE_TYPE = 'simple'
 
 
+
+
+

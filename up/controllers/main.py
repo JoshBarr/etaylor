@@ -1,3 +1,6 @@
+#!/usr/local/bin/python
+# -*- coding: utf-8 -*-
+
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash, json, escape, make_response, send_from_directory, after_this_request,\
      current_app, Blueprint
@@ -58,7 +61,14 @@ def start():
 
 
 
-
+@main.context_processor
+def inject_social():
+    return dict(
+        social_headline=u"Add your answer to E Taylor’s EP cover art, then download the rapper’s debut for free",
+        social_description=u"Free download: NZ rapper E Taylor’s debut EP ‘Up (Side A)’",
+        social_image=url_for('static', filename = 'up-side-a-share.png', _external = True),
+        social_url=url_for('main.start', _external = True)
+    )
 
 
 
@@ -68,8 +78,12 @@ def create_answer(form_field, question):
     random_answers = get_random_answers()
     shuffle(random_answers)
 
+    string = form_field.data.strip().replace('\n', '').replace("\r", "")
+
+    # print string
+
     answer = Answers(
-            text = form_field.data,
+            text = string,
             time = time.time(),
             question_id = question.id
         )
@@ -131,7 +145,7 @@ def download():
 @main.route('/download/<hash_id>', methods=['GET', 'POST'])
 # @cache.cached(timeout=3600)
 def preview(hash_id):
-
+    UP = AlbumModel()
     answer_id = current_app.hashids.decrypt(hash_id)[0]
 
     album = Artwork.query.filter_by(answer_id=answer_id).first()
@@ -141,6 +155,10 @@ def preview(hash_id):
     session["download"] = request.url
 
     img = album.get_web_image()
+
+    answer = Answers.query.filter_by(id=answer_id).first()
+    question = UP.get_question()
+
 
     if request.method == "POST":
         if request.form:
@@ -170,7 +188,7 @@ def preview(hash_id):
                 errors.append("bad email addy")
 
 
-    return render_template('download.j2', album=album, email_form=email_form, uid=hash_id, errors=errors, img=img)
+    return render_template('download.j2', album=album, email_form=email_form, uid=hash_id, errors=errors, img=img, answer=answer, question=question)
 
 
 

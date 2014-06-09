@@ -3,9 +3,9 @@ var config = require("./config.js");
 
 
 if (!String.prototype.trim) {
- String.prototype.trim = function() {
-  return this.replace(/^\s+|\s+$/g,'');
- }
+    String.prototype.trim = function() {
+        return this.replace(/^\s+|\s+$/g,'');
+    }
 }
 
 
@@ -43,19 +43,19 @@ MaxLength.prototype.message = function() {
  * @param {[type]} length [description]
  */
 var NotNull = function(minLength) {
-    this._length = minLength || 1;
+    this._length = minLength || 2;
     this.onUserInput = false;
 };
 
 NotNull.prototype.validate = function(field) {
-    var length, emptyStr, isNotEmpty;
+    var length, emptyStr, notNull;
 
     length = field.value.length;
     // emptyStr = new RegExp("", "g");
-    isNotEmpty = field.value.match(/^\s*\S.*$/) !== null;
+    notNull = field.value.match(/\S/) !== null;
     isLongEnough = (length >= this._length);
 
-    if (isLongEnough && isNotEmpty) {
+    if (isLongEnough && notNull) {
         return true;
     }
 
@@ -66,11 +66,11 @@ NotNull.prototype.message = function() {
     var message = ["Too short!"];
 
     if (this._length) {
-        message.push(" Make it longer than " + this._length + " character");
+        message.push(" Make it at least " + this._length + " character");
         if (this._length > 1) {
             message.push("s");
         }
-        message.push(".");
+        message.push(" long.");
     }
 
     return message.join("");
@@ -180,14 +180,28 @@ Form.prototype = {
 
         this.addField(new Field(this.textarea, {
             validation: [
-                new NotNull(1),
+                new NotNull(2),
                 new MaxLength(80)
             ]
         }));
 
         var $el = $(this.textarea);
         $el.trigger("click");
-        
+        $el.focus();
+            
+        var self = this;
+        var ENTER = 13;
+
+        // Prevent newlines in the field.
+        $el.on("keydown", function(e) {
+            if (e.keyCode === ENTER && !e.shiftKey) {
+                // prevent default behavior
+                e.preventDefault();
+                // self.handleSubmit.call(self, e);
+                return false;
+            }
+        });
+
 
         $el.on("keyup change", function(e) {
             var val = e.target.value;
@@ -195,6 +209,10 @@ Form.prototype = {
                 if ($questionText.hasClass('question__text--disabled')) {                
                     $questionText.removeClass('question__text--disabled');
                 }
+            }
+
+            if (e.keyCode === ENTER && !e.shiftKey) {
+                self.handleSubmit.call(self, e);
             }
         });
 
@@ -254,7 +272,6 @@ Form.prototype = {
             complete: $.proxy(this.animComplete, this)
         });
 
-        // return this.$el.trigger("submit");
 
     },
 
@@ -263,8 +280,10 @@ Form.prototype = {
     },
 
     handleSubmit: function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+        if (e) {        
+            e.preventDefault();
+            e.stopPropagation();
+        }
         this.checkFields();
     }
 };

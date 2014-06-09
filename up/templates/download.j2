@@ -73,22 +73,39 @@
             </form>
         </div>
     </div>
-    <div class='block block--fullscreen block--album   block--dark  no-zip-hide' data-download-zip>
-        <div class="text--center small">
-            <a target="_blank" class='footer__link footer__link--twitter' href="http://www.twitter.com/thisisetaylor">
-                <i class='i i-footer icon-twitter'></i>
-                <span class='footer__text'>Twitter</span>
-            </a>
-            <a target="_blank" class='footer__link' href="http://www.facebook.com/thisisetaylor">
-                <i class='i i-footer icon-facebook'></i>
-                <span class='footer__text'>Facebook</span>
-            </a>
-            <a target="_blank" class='footer__link' href="http://www.soundcloud.com/thisisetaylor">
-                <i class='i i-footer i-footer--long icon-soundcloud'></i>
-                <span class='footer__text'>Soundcloud</span>
-            </a>
+    <div class='block block--fullscreen block--album   block--dark'>
+
+        <div class="text--center">
+            {% include "social.j2" with context %}
+        </div>
+        <div class="text--center">
+
+            <div class="small network">
+                <a target="_blank" class='footer__link footer__link--twitter' href="http://www.twitter.com/thisisetaylor">
+                    <i class='i i-footer icon-twitter'></i>
+                    <span class='footer__text'>Twitter</span>
+                </a>
+                <a target="_blank" class='footer__link' href="http://www.facebook.com/thisisetaylor">
+                    <i class='i i-footer icon-facebook'></i>
+                    <span class='footer__text'>Facebook</span>
+                </a>
+                <a target="_blank" class='footer__link' href="http://www.soundcloud.com/thisisetaylor">
+                    <i class='i i-footer i-footer--long icon-soundcloud'></i>
+                    <span class='footer__text'>Soundcloud</span>
+                </a>
+            </div>
+
+            
         </div>
     </div>
 </div>
 
+{% endblock %}
+
+
+{% block scripts %}
+    {{ super() }}
+
+    <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+    <script type="text/javascript">stLight.options({publisher: "56318495-bb29-4bc3-afb5-92c9382816e4", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 {% endblock %}

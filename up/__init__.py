@@ -35,11 +35,22 @@ def create_app(settings_file):
     app.mail = mail
 
     mail.init_app(app)
-
     app.hashids = Hashids(salt="salty seafaring sailor",  min_length=8)
+
+    register_errorhandlers(app)
     app.register_blueprint(main)
     
     return app
+
+
+def register_errorhandlers(app):
+    def render_error(error):
+        # If a HTTPException, pull the `code` attribute; default to 500
+        error_code = getattr(error, 'code', 500)
+        return render_template("{0}.j2".format(error_code)), error_code
+    for errcode in [401, 404, 500]:
+        app.errorhandler(errcode)(render_error)
+    return None
 
 
 app = create_app("settings.py")

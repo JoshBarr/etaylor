@@ -172,7 +172,7 @@ button {
  * 8. Basic cosmetics for default buttons. Change or override at will.
  * 9. Donâ€™t allow buttons to have underlines; it kinda ruins the illusion.
  */
-.btn {
+.btn, .share {
   /* [1] */
   vertical-align: middle;
   /* [2] */
@@ -198,19 +198,19 @@ button {
   border-color: transparent;
   border-style: solid; }
 
-.btn, .btn:hover {
+.btn, .share, .btn:hover {
   text-decoration: none;
   /* [9] */ }
 
 .btn:active, .btn:focus {
   outline: none; }
 
-.i, .btn {
+.i, .btn, .share {
   display: inline-block;
   *display: inline;
   *zoom: 1; }
 
-.btn {
+.btn, .share {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -281,7 +281,7 @@ button {
     margin-top: 0.5em;
     width: 100%; } }
 
-.btn--main {
+.btn--main, .share {
   font-size: 15px;
   margin-top: 1em;
   text-align: center;
@@ -307,6 +307,51 @@ button {
   -moz-transition: opacity 0.5s ease-out;
   -o-transition: opacity 0.5s ease-out;
   transition: opacity 0.5s ease-out; }
+
+.share {
+  position: relative;
+  border: solid 1px #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+  padding-left: 1em;
+  margin-top: 0; }
+  .share > .i {
+    margin-top: -0.2em;
+    margin-right: 0.35em;
+    -webkit-transition: margin-top 0.1s ease-out, opacity 0.1s ease-out;
+    -ms-transition: margin-top 0.1s ease-out, opacity 0.1s ease-out;
+    -moz-transition: margin-top 0.1s ease-out, opacity 0.1s ease-out;
+    -o-transition: margin-top 0.1s ease-out, opacity 0.1s ease-out;
+    transition: margin-top 0.1s ease-out, opacity 0.1s ease-out;
+    opacity: 1; }
+  .share:before {
+    position: absolute;
+    top: 1em;
+    vertical-align: middle;
+    left: 1.25em;
+    display: block;
+    content: "•";
+    opacity: 0;
+    -webkit-transition: top 0.1s ease-out, opacity 0.1s ease-out;
+    -ms-transition: top 0.1s ease-out, opacity 0.1s ease-out;
+    -moz-transition: top 0.1s ease-out, opacity 0.1s ease-out;
+    -o-transition: top 0.1s ease-out, opacity 0.1s ease-out;
+    transition: top 0.1s ease-out, opacity 0.1s ease-out; }
+  .share:hover {
+    border-color: rgba(255, 255, 255, 0.75); }
+    .share:hover > .i {
+      margin-top: -1em;
+      opacity: 0; }
+    .share:hover:before {
+      top: 0;
+      opacity: 1; }
+  .share:active {
+    background: #3A0DCA;
+    border-color: #3A0DCA; }
+
+.share + .share {
+  margin-left: 0.5em; }
+
+
 
 .brush {
   position: absolute;
@@ -695,6 +740,13 @@ input:focus, textarea:focus {
   margin-top: 1.5em; }
 
 
+
+.network {
+  margin-top: 3em;
+  padding-top: 1em;
+  border-top: solid 1px rgba(255, 255, 255, 0.1);
+  display: inline-block;
+  min-width: 17em; }
 
 .mb0 {
   margin-bottom: 0; }

@@ -179,14 +179,6 @@ h2, .question__answer, .intro {
   @extend %page-bg;
 }
 
-// .small {
-//   font-size: .875em;
-// }
-
-// .tiny {
-//     font-size: .75em;
-// }
-
 
 
 
@@ -459,6 +451,67 @@ button.btn-block--q-xsmall {
   cursor: default;
   @include vendor(transition, opacity .5s ease-out);
 }
+
+
+
+.share {
+  position: relative;
+  @extend .btn;
+  @extend .btn--main;
+  border: solid 1px #fff;
+  border-color: rgba(255,255,255,.25);
+  padding-left: 1em;
+  margin-top: 0;
+
+  > .i {
+    margin-top: -.2em;
+    margin-right: .35em;
+    @include vendor(transition, margin-top .1s ease-out, opacity .1s ease-out);
+    opacity: 1
+  }
+
+  &:before {
+    position: absolute;
+    top: 1em;
+    vertical-align: middle;
+    left: 1.25em;
+    display: block;
+    content: "•";
+    opacity: 0;
+    @include vendor(transition, top .1s ease-out, opacity .1s ease-out);
+    // visibility: hidden;
+  }
+
+  &:hover {
+    border-color: rgba(255,255,255,.75);
+
+    > .i {
+      margin-top: -1em;
+      opacity: 0;
+    }
+    &:before {
+      top: 0;
+      opacity: 1;
+    }
+  }
+  &:active {
+    background: #3A0DCA;
+    border-color: #3A0DCA;
+  }
+}
+
+.share + .share {
+  margin-left: .5em;
+}
+
+.share--facebook {
+  
+}
+
+.share--twitter {
+  
+}
+
 
 
 .brush {
@@ -799,6 +852,14 @@ input[type="text"] {
     @extend %m;
 }
 
+.network {
+  margin-top: 3em;
+  padding-top: 1em;
+  border-top: solid 1px rgba(255, 255, 255, 0.1);
+  display: inline-block;
+  min-width: 17em;
+}
+
 .mb0 {
     margin-bottom: 0;
 }
@@ -904,56 +965,6 @@ input[type="text"] {
 .brush {
     z-index: 1;
 }
-
-// .site-nav {
-//     position: absolute;
-//     top: 0;
-//     width: 100%;
-//     left: 0;
-//     z-index: 3;
-//     cursor: pointer;
-//     min-height: 4.5em;
-// }
-    
-//     .site-nav__container {
-
-//         @include media(small) {
-//             padding-top: 1em;
-//         }
-//         opacity: 0;
-
-//         & > div {
-//           position: absolute;
-//           top: 0;
-//           left: 0;
-//           right: 0;
-//         }
-//     }
-
-
-//     .site-nav__item {
-//         color: #ddd;
-//         text-decoration: none;
-//         border-bottom: dashed 1px rgba(255,255,255,0.2);
-//         padding-bottom: .125em;
-
-//         @include vendor(transition, border-bottom-color .1s);
-
-//         & + & {
-//             margin-left: 1em;
-//         }
-      
-//       &:hover {
-//         color: #fff;
-//         border-bottom-color: #999;
-//       }
-//     }
-
-
-
-//     .site-nav__item--current {
-//         // color: #ff0000;
-//     }
 
 
 // Social media icons on the share page
