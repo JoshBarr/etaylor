@@ -329,11 +329,11 @@ button {
 }
 
 .btn {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
+  // -webkit-user-select: none;
+  // -moz-user-select: none;
+  // -ms-user-select: none;
+  // -o-user-select: none;
+  // user-select: none;
 }
 
 .i {
@@ -462,7 +462,8 @@ button.btn-block--q-xsmall {
   border-color: rgba(255,255,255,.25);
   padding-left: 1em;
   margin-top: 0;
-
+  cursor: pointer; 
+  
   > .i {
     margin-top: -.2em;
     margin-right: .35em;
