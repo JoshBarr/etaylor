@@ -241,12 +241,12 @@ def send_email(app, email, subject, body, html):
     app.mail.send(msg)
 
 
-@main.route('/music-video/<hash_id>', methods=['GET', 'POST'])
+@main.route('/listen-now/<hash_id>', methods=['GET', 'POST'])
 @cache.cached(timeout=3600)
 def music_video(hash_id):
     if 'music_video' in session:
         session.pop('music_video', None)
-        return render_template('music-video.j2', album_id=hash_id)
+        return render_template('listen-now.j2', album_id=hash_id)
     else:
         return redirect(url_for('.start'))
 
